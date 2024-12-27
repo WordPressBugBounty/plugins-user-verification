@@ -3,7 +3,7 @@
 Plugin Name: User Verification
 Plugin URI: http://pickplugins.com
 Description: Verify user before access on your website.
-Version: 2.0.27
+Version: 2.0.28
 Text Domain: user-verification
 Domain Path: /languages
 Author: PickPlugins
@@ -123,6 +123,7 @@ class UserVerification
         require_once(user_verification_plugin_dir . 'includes/3rd-party/3rd-party.php');
 
         require_once(user_verification_plugin_dir . 'includes/functions-user-profile.php');
+        require_once(user_verification_plugin_dir . 'includes/functions-rest.php');
     }
 
 

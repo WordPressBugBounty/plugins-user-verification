@@ -674,7 +674,7 @@ function uv_registration_protect_allowed_domain($errors, $sanitized_user_login, 
 
 
 
-add_filter('wp_login_errors', 'user_verification_registered_message', 10, 2);
+//add_filter('wp_login_errors', 'user_verification_registered_message', 10, 2);
 
 function user_verification_registered_message($errors, $redirect_to)
 {
@@ -1019,6 +1019,9 @@ if (!function_exists('user_verification_user_registered')) {
     function user_verification_user_registered($user_id)
     {
 
+        $user_activation_status = get_user_meta($user_id, 'user_activation_status', true);
+        if ($user_activation_status) return;
+
 
         $user_verification_settings = get_option('user_verification_settings');
         $email_verification_enable = isset($user_verification_settings['email_verification']['enable']) ? $user_verification_settings['email_verification']['enable'] : 'yes';
@@ -1150,19 +1153,19 @@ if (!function_exists('user_verification_user_registered')) {
 
 
 
-function user_verification_recursive_sanitize_arr($array)
-{
+// function user_verification_recursive_sanitize_arr($array)
+// {
 
-    foreach ($array as $key => &$value) {
-        if (is_array($value)) {
-            $value = user_verification_recursive_sanitize_arr($value);
-        } else {
-            $value = wp_unslash(_wp_specialchars($value, ENT_QUOTES));
-        }
-    }
+//     foreach ($array as $key => &$value) {
+//         if (is_array($value)) {
+//             $value = user_verification_recursive_sanitize_arr($value);
+//         } else {
+//             $value = wp_unslash(_wp_specialchars($value, ENT_QUOTES));
+//         }
+//     }
 
-    return $array;
-}
+//     return $array;
+// }
 
 
 
@@ -1383,9 +1386,10 @@ function add_verification_status_filter($which)
 
 ?>
     <select name="verification_status_<?php echo $which; ?>" style="float:none;">
-        <option value="">Old Users</option>
-        <option value="1" <?php selected(1, $section, true); ?>>Verified</option>
-        <option value="0" <?php selected(0, $section, true); ?>>Unverified</option>
+        <option value="">All Users</option>
+        <option value="oldUsers" <?php selected("oldUsers", $section, true); ?>>Old Users</option>
+        <option value="verified" <?php selected("verified", $section, true); ?>>Verified</option>
+        <option value="unverified" <?php selected("unverified", $section, true); ?>>Unverified</option>
     </select>
 <?php
 
@@ -1401,6 +1405,7 @@ function filter_users_by_course_section($query)
 
 
     global $pagenow;
+
     if (is_admin() && 'users.php' == $pagenow) {
         $button = key(array_filter($_GET, function ($v) {
             return __('Filter') === $v;
@@ -1410,21 +1415,46 @@ function filter_users_by_course_section($query)
 
 
 
-        if ($status == 1) {
+        if ($status == "verified") {
             $meta_query = [['key' => 'user_activation_status', 'value' => 1, 'compare' => '=']];
             $query->set('meta_key', 'user_activation_status');
             $query->set('meta_query', $meta_query);
         }
-        if ($status == 0) {
+        if ($status == "unverified") {
             $meta_query = [['key' => 'user_activation_status', 'value' => 0, 'compare' => '=']];
             //$query->set('meta_key', 'user_activation_status');
             $query->set('meta_query', $meta_query);
         }
-        if (isset($_GET['verification_status_' . $button]) && ($_GET['verification_status_' . $button]) == '') {
+        if ($status == "oldUsers") {
             $meta_query = [['key' => 'user_activation_status', 'value' => 0, 'compare' => 'NOT EXISTS']];
             //$query->set('meta_key', 'user_activation_status');
             $query->set('meta_query', $meta_query);
         }
+
+
+
+        // if (isset($_GET['verification_status_' . $button]) && ($_GET['verification_status_' . $button]) == '') {
+        //     $meta_query = [['key' => 'user_activation_status', 'value' => 0, 'compare' => 'NOT EXISTS']];
+        //     //$query->set('meta_key', 'user_activation_status');
+        //     $query->set('meta_query', $meta_query);
+        // }
     }
 }
 add_filter('pre_get_users', 'filter_users_by_course_section');
+
+
+function user_verification_recursive_sanitize_arr($array)
+{
+    foreach ($array as $key => &$value) {
+        if (is_array($value)) {
+            $value = user_verification_recursive_sanitize_arr($value);
+        } else {
+            if ($key == 'url') {
+                $value = esc_url_raw($value);
+            } else {
+                $value = wp_kses_post($value);
+            }
+        }
+    }
+    return $array;
+}
