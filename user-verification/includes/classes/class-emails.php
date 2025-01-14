@@ -4,9 +4,7 @@ if (!defined('ABSPATH')) exit;  // if direct access
 class class_user_verification_emails
 {
 
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public function send_email($email_data)
     {
@@ -17,11 +15,11 @@ class class_user_verification_emails
         $email_to = isset($email_data['email_to']) ? $email_data['email_to'] : '';
         $email_bcc = isset($email_data['email_bcc']) ? $email_data['email_bcc'] : '';
 
-        $email_from = isset($email_data['email_from']) ? $email_data['email_from'] : get_option('admin_email');
-        $email_from_name = isset($email_data['email_from_name']) ? $email_data['email_from_name'] : get_bloginfo('name');
+        $email_from = !empty($email_data['email_from']) ? $email_data['email_from'] : get_option('admin_email');
+        $email_from_name = !empty($email_data['email_from_name']) ? $email_data['email_from_name'] : get_bloginfo('name');
 
-        $reply_to = isset($email_data['reply_to']) ? $email_data['reply_to'] : get_option('admin_email');
-        $reply_to_name = isset($email_data['reply_to_name']) ? $email_data['reply_to_name'] : get_bloginfo('name');
+        $reply_to = !empty($email_data['reply_to']) ? $email_data['reply_to'] : get_option('admin_email');
+        $reply_to_name = !empty($email_data['reply_to_name']) ? $email_data['reply_to_name'] : get_bloginfo('name');
 
         // $subject = isset($email_data['subject']) ? $email_data['subject'] : '';
         $subject = isset($email_data['subject']) ? wp_specialchars_decode($email_data['subject'], ENT_QUOTES) : '';

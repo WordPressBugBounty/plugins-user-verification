@@ -1019,8 +1019,13 @@ if (!function_exists('user_verification_user_registered')) {
     function user_verification_user_registered($user_id)
     {
 
+
         $user_activation_status = get_user_meta($user_id, 'user_activation_status', true);
+        error_log("user_verification_user_registered: " . $user_activation_status);
+
         if ($user_activation_status) return;
+
+        error_log("user_verification_user_registered: " . $user_activation_status);
 
 
         $user_verification_settings = get_option('user_verification_settings');
@@ -1030,6 +1035,9 @@ if (!function_exists('user_verification_user_registered')) {
 
 
         if ($email_verification_enable != 'yes') return;
+
+        error_log("$email_verification_enable: " . $email_verification_enable);
+
 
         $class_user_verification_emails = new class_user_verification_emails();
         $email_templates_data = $class_user_verification_emails->email_templates_data();
@@ -1046,8 +1054,8 @@ if (!function_exists('user_verification_user_registered')) {
         $enable = isset($email_templates_data['enable']) ? $email_templates_data['enable'] : 'yes';
 
         $email_bcc = isset($email_templates_data['email_bcc']) ? $email_templates_data['email_bcc'] : '';
-        $email_from = isset($email_templates_data['email_from']) ? $email_templates_data['email_from'] : '';
-        $email_from_name = isset($email_templates_data['email_from_name']) ? $email_templates_data['email_from_name'] : '';
+        $email_from = isset($email_templates_data['email_from']) ? $email_templates_data['email_from'] : get_option('admin_email');
+        $email_from_name = isset($email_templates_data['email_from_name']) ? $email_templates_data['email_from_name'] : get_bloginfo('name');
         $reply_to = isset($email_templates_data['reply_to']) ? $email_templates_data['reply_to'] : '';
         $reply_to_name = isset($email_templates_data['reply_to_name']) ? $email_templates_data['reply_to_name'] : '';
         $email_subject = isset($email_templates_data['subject']) ? $email_templates_data['subject'] : '';
@@ -1062,10 +1070,10 @@ if (!function_exists('user_verification_user_registered')) {
         $verification_page_url = get_permalink($verification_page_id);
         $verification_page_url = !empty($verification_page_url) ? $verification_page_url : get_bloginfo('url');
 
-
-        $permalink_structure = get_option('permalink_structure');
-
         $user_activation_key =  md5(uniqid('', true));
+
+        error_log("$user_activation_key: " . $user_activation_key);
+
 
         update_user_meta($user_id, 'user_activation_key', $user_activation_key);
         update_user_meta($user_id, 'user_activation_status', 0);
@@ -1142,9 +1150,9 @@ if (!function_exists('user_verification_user_registered')) {
         $email_data['attachments'] = array();
 
 
-
         if ($enable == 'yes') {
             $mail_status = $class_user_verification_emails->send_email($email_data);
+            error_log($mail_status);
         }
     }
 }
@@ -1217,8 +1225,6 @@ function user_verification_profile_update($user_id, $old_user_data)
 
             $verification_page_url = get_permalink($verification_page_id);
             $verification_page_url = !empty($verification_page_url) ? $verification_page_url : get_bloginfo('url');
-
-            $permalink_structure = get_option('permalink_structure');
 
             $user_activation_key =  md5(uniqid('', true));
 
