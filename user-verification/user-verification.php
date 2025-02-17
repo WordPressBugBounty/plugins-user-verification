@@ -3,7 +3,7 @@
 Plugin Name: User Verification
 Plugin URI: http://pickplugins.com
 Description: Verify user before access on your website.
-Version: 2.0.29
+Version: 2.0.30
 Text Domain: user-verification
 Domain Path: /languages
 Author: PickPlugins
@@ -26,6 +26,10 @@ class UserVerification
         $this->_load_functions();
         $this->_load_classes();
         $this->_load_script();
+
+        global $postGridBlocksVars;
+
+        $postGridBlocksVars['siteUrl'] = get_bloginfo('url');
 
 
         add_action('init', array($this, '_textdomain'));
@@ -86,6 +90,31 @@ class UserVerification
             wp_schedule_event(time(), 'daily', 'user_verification_verify_reminder');
         }
 
+        if (!wp_next_scheduled('user_verification_validated_users_email')) {
+            wp_schedule_event(time(), 'daily', 'user_verification_validated_users_email');
+        }
+
+        global $wpdb;
+        $charset_collate = $wpdb->get_charset_collate();
+        $prefix = $wpdb->prefix;
+        $table = $prefix . 'user_verification_stats';
+
+        $sql = "CREATE TABLE IF NOT EXISTS $table (
+
+                    id int(100) NOT NULL AUTO_INCREMENT,
+        			type	VARCHAR( 50 )	NOT NULL,
+        			datetime  DATETIME NOT NULL,
+
+                    UNIQUE KEY id (id)
+                ) $charset_collate;";
+
+        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+        dbDelta($sql);
+
+
+        // $user_verification_info = array();
+        // $user_verification_info['db_version'] = 0;
+
 
 
         do_action('user_verification_activation');
@@ -111,6 +140,7 @@ class UserVerification
     {
 
 
+        require_once(user_verification_plugin_dir . 'includes/functions-email-validation.php');
         require_once(user_verification_plugin_dir . 'includes/functions.php');
         require_once(user_verification_plugin_dir . 'includes/functions-ajax.php');
 
@@ -124,6 +154,13 @@ class UserVerification
 
         require_once(user_verification_plugin_dir . 'includes/functions-user-profile.php');
         require_once(user_verification_plugin_dir . 'includes/functions-rest.php');
+        require_once(user_verification_plugin_dir . 'includes/functions-counter.php');
+
+        require_once(user_verification_plugin_dir . 'templates/magic-login-form/index.php');
+        require_once(user_verification_plugin_dir . 'templates/magic-login-form/hook.php');
+
+        require_once(user_verification_plugin_dir . 'templates/email-otp-login-form/index.php');
+        require_once(user_verification_plugin_dir . 'templates/email-otp-login-form/hook.php');
     }
 
 
@@ -146,6 +183,9 @@ class UserVerification
         require_once(user_verification_plugin_dir . 'includes/classes/class-settings-tabs.php');
         require_once(user_verification_plugin_dir . 'includes/settings-hook.php');
         require_once(user_verification_plugin_dir . 'includes/classes/class-admin-notices.php');
+        require_once(user_verification_plugin_dir . 'includes/classes/class-email-verifier.php');
+        require_once(user_verification_plugin_dir . 'includes/classes/class-shortcodes.php');
+        require_once(user_verification_plugin_dir . 'includes/classes/class-stats.php');
     }
 
     public function _define_constants()
@@ -229,7 +269,13 @@ class UserVerification
 
 
         wp_register_script('uv_front_js', plugins_url('/assets/front/js/scripts.js', __FILE__), array('jquery'));
+        wp_register_script('user_verification_magic_login_form', plugins_url('/templates/magic-login-form/index.js', __FILE__), array());
+        wp_register_style('user_verification_magic_login_form', user_verification_plugin_url . 'templates/magic-login-form/index.css');
+        wp_register_script('user_verification_otp_login_form', plugins_url('/templates/email-otp-login-form/index.js', __FILE__), array());
+        wp_register_style('user_verification_otp_login_form', user_verification_plugin_url . 'templates/email-otp-login-form/index.css');
+
         //wp_localize_script( 'uv_front_js', 'uv_ajax', array( 'uv_ajaxurl' => admin_url( 'admin-ajax.php')));
+
 
         wp_register_style('user_verification', user_verification_plugin_url . 'assets/front/css/style.css');
 
@@ -271,6 +317,9 @@ class UserVerification
 
         wp_register_style('font-awesome-4', user_verification_plugin_url . 'assets/global/css/font-awesome-4.css');
         wp_register_style('font-awesome-5', user_verification_plugin_url . 'assets/global/css/font-awesome-5.css');
+        wp_register_style('icofont', user_verification_plugin_url . 'assets/css/icofont/icofont.min.css');
+
+
 
         wp_register_style('settings-tabs', user_verification_plugin_url . 'assets/settings-tabs/settings-tabs.css');
         wp_register_script('settings-tabs', user_verification_plugin_url . 'assets/settings-tabs/settings-tabs.js', array('jquery'));

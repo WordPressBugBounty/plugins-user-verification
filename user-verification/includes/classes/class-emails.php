@@ -64,10 +64,6 @@ class class_user_verification_emails
 
         $headers = apply_filters('user_verification_mail_headers', $headers);
 
-        //error_log(serialize($headers));
-
-
-
 
 
 
@@ -92,6 +88,7 @@ class class_user_verification_emails
         include user_verification_plugin_dir . 'templates/emails/email_resend_key.php';
         include user_verification_plugin_dir . 'templates/emails/send_mail_otp.php';
         include user_verification_plugin_dir . 'templates/emails/email_reminder.php';
+        include user_verification_plugin_dir . 'templates/emails/send_magic_login_url.php';
 
 
 
@@ -148,6 +145,16 @@ class class_user_verification_emails
                 'email_from_name' => get_bloginfo('name'),
                 'enable' => 'yes',
             ),
+            'send_magic_login_url' => array(
+                'name' => __('Send Magic Login URL', 'user-verification'),
+                'description' => __('Notification email for sending magic login URL.', 'user-verification'),
+                'subject' => __('Magic Login - {site_url}', 'user-verification'),
+                'html' => $templates_data_html['send_magic_login_url'],
+                'email_to' => get_option('admin_email'),
+                'email_from' => get_option('admin_email'),
+                'email_from_name' => get_bloginfo('name'),
+                'enable' => 'yes',
+            ),
 
 
         );
@@ -179,7 +186,20 @@ class class_user_verification_emails
             '{user_avatar}' => __('User avatar', 'user-verification'),
             '{user_email}' => __('User email address', 'user-verification'),
             '{ac_activaton_url}' => __('Account activation URL', 'user-verification'),
+        );
 
+        $parameters['send_magic_login_url'] = array(
+            '{site_name}' => __('Website title', 'user-verification'),
+            '{site_description}' => __('Website tagline', 'user-verification'),
+            '{site_url}' => __('Website URL', 'user-verification'),
+            '{site_logo_url}' => __('Website logo URL', 'user-verification'),
+            '{user_name}' => __('Username', 'user-verification'),
+            '{user_display_name}' => __('User display name', 'user-verification'),
+            '{first_name}' => __('User first name', 'user-verification'),
+            '{last_name}' => __('User last name', 'user-verification'),
+            '{user_avatar}' => __('User avatar', 'user-verification'),
+            '{user_email}' => __('User email address', 'user-verification'),
+            '{magic_login_url}' => __('Magic Login URL', 'user-verification'),
         );
 
         $parameters['email_confirmed'] = array(

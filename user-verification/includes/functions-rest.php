@@ -17,6 +17,28 @@ class UserVerificationRest
 
 
 
+
+		register_rest_route(
+			'user-verification/v2',
+			'/stats_counter',
+			array(
+				'methods' => 'POST',
+				'callback' => array($this, 'stats_counter'),
+				'permission_callback' => function () {
+					return current_user_can('manage_options');
+				},
+			)
+		);
+		register_rest_route(
+			'user-verification/v2',
+			'/process_form_data',
+			array(
+				'methods' => 'POST',
+				'callback' => array($this, 'process_form_data'),
+				'permission_callback' => '__return_true',
+			)
+		);
+
 		register_rest_route(
 			'user-verification/v2',
 			'/user_roles_list',
@@ -68,6 +90,17 @@ class UserVerificationRest
 				},
 			)
 		);
+		register_rest_route(
+			'user-verification/v2',
+			'/validated_email',
+			array(
+				'methods' => 'POST',
+				'callback' => array($this, 'validated_email'),
+				'permission_callback' => function () {
+					return current_user_can('manage_options');
+				},
+			)
+		);
 
 
 
@@ -78,13 +111,133 @@ class UserVerificationRest
 			array(
 				'methods' => 'POST',
 				'callback' => array($this, 'get_posts'),
-				'permission_callback' => '__return_true',
+				'permission_callback' => function () {
+					return current_user_can('manage_options');
+				},
 
 			)
 		);
 	}
 
 
+	/**
+	 * Return validated_email
+	 *
+	 * @since 1.0.0
+	 * @param WP_REST_Request $request Post data.
+	 */
+	public function validated_email($request)
+	{
+		$response = [];
+
+		$email = isset($request['email']) ? sanitize_text_field($request['email']) : '';
+		$apikey = isset($request['apikey']) ? sanitize_text_field($request['apikey']) : '';
+		$testType = isset($request['testType']) ? sanitize_text_field($request['testType']) : 'full';
+
+		$UserVerificationStats = new UserVerificationStats();
+		$UserVerificationStats->add_stats('email_validation_request');
+
+		$url = 'https://isspammy.com/wp-json/email-validation/v2/validate_email';
+
+		// Request Arguments
+		$args = array(
+			'body'    => json_encode(array(
+				'email'  => $email,
+				'apikey' => $apikey,
+				'testType' => $testType,
+			)),
+			'headers' => array(
+				'Content-Type' => 'application/json',
+			),
+			'method'  => 'POST',
+			'timeout' => 60,
+		);
+
+		// Sending the request
+		$response = wp_remote_post($url, $args);
+
+		// Check for errors
+		if (is_wp_error($response)) {
+			$UserVerificationStats = new UserVerificationStats();
+			$UserVerificationStats->add_stats('email_validation_failed');
+
+			return array(
+				'error'   => true,
+				'message' => $response->get_error_message(),
+			);
+		}
+
+		// Get response body
+		$body = wp_remote_retrieve_body($response);
+
+		error_log(serialize($body));
+		$UserVerificationStats = new UserVerificationStats();
+		$UserVerificationStats->add_stats('email_validation_success');
+
+		return json_decode($body, true);
+
+
+		die(wp_json_encode($response));
+	}
+
+
+
+
+	/**
+	 * Return stats_counter
+	 *
+	 * @since 1.0.0
+	 * @param WP_REST_Request $request Post data.
+	 */
+	public function stats_counter($request)
+	{
+		$response = [];
+		$data = $request->get_body();
+		$_wpnonce = $request->get_param('_wpnonce');
+		$_wp_http_referer = $request->get_param('_wp_http_referer');
+		$formType = $request->get_param('formType');
+
+		global $wpdb;
+		$table = $wpdb->prefix . 'user_verification_stats';
+
+		$query = "SELECT type, COUNT(*) AS count FROM $table GROUP BY type ORDER BY count DESC";
+		$results = $wpdb->get_results($query, ARRAY_A);
+
+		$types = [];
+		foreach ($results as $row) {
+			$types[$row['type']] = (int) $row['count'];
+		}
+
+
+		die(wp_json_encode($types));
+	}
+	/**
+	 * Return process_form_data
+	 *
+	 * @since 1.0.0
+	 * @param WP_REST_Request $request Post data.
+	 */
+	public function process_form_data($request)
+	{
+		$response = [];
+		$data = $request->get_body();
+		$_wpnonce = $request->get_param('_wpnonce');
+		$_wp_http_referer = $request->get_param('_wp_http_referer');
+		$formType = $request->get_param('formType');
+
+		if (!wp_verify_nonce($_wpnonce, 'wp_rest')) {
+			$response['errors']['nonce_check_failed'] = __('Security Check Failed', 'user-verification');
+			return $response;
+		}
+
+
+
+		if (empty($errors)) {
+			$process_form = apply_filters('user_verification_form_wrap_process_' . $formType,  $request);
+			$response = $process_form;
+		}
+		die(wp_json_encode($response));
+	}
 
 	/**
 	 * Return user_roles_list
@@ -169,6 +322,12 @@ class UserVerificationRest
 
 		$name = isset($request['name']) ? sanitize_text_field($request['name']) : '';
 		$value = isset($request['value']) ? user_verification_recursive_sanitize_arr($request['value']) : '';
+
+
+		error_log(serialize($value));
+
+
+
 		$message = "";
 		if (!empty($value)) {
 			$status = update_option($name, $value);
@@ -204,11 +363,9 @@ class UserVerificationRest
 
 		//delete_option($option);
 
-		error_log($option);
 
 		$response = get_option($option);
 
-		error_log(serialize($response));
 
 		die(wp_json_encode($response));
 	}
@@ -236,7 +393,6 @@ class UserVerificationRest
 
 
 		$queryArgs = isset($post_data['queryArgs']) ? $post_data['queryArgs'] : [];
-		error_log(serialize($queryArgs));
 		$rawData = '<!-- wp:post-featured-image /--><!-- wp:post-title /--><!-- wp:post-excerpt /-->';
 		$rawData = !empty($post_data['rawData']) ? $post_data['rawData'] : $rawData;
 

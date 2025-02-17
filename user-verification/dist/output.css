@@ -42,6 +42,10 @@
   visibility: hidden;
 }
 
+.static {
+  position: static;
+}
+
 .fixed {
   position: fixed;
 }
@@ -174,6 +178,10 @@
   margin-bottom: 1.75rem;
 }
 
+.\!mt-0 {
+  margin-top: 0px !important;
+}
+
 .mb-2 {
   margin-bottom: 0.5rem;
 }
@@ -202,16 +210,16 @@
   margin-left: 0.75rem;
 }
 
+.ml-4 {
+  margin-left: 1rem;
+}
+
 .ml-5 {
   margin-left: 1.25rem;
 }
 
 .mr-2 {
   margin-right: 0.5rem;
-}
-
-.mr-4 {
-  margin-right: 1rem;
 }
 
 .mt-2 {
@@ -295,6 +303,10 @@
   max-height: 350px;
 }
 
+.min-h-32 {
+  min-height: 8rem;
+}
+
 .min-h-\[40px\] {
   min-height: 40px;
 }
@@ -341,6 +353,10 @@
 
 .w-\[20px\] {
   width: 20px;
+}
+
+.w-\[250px\] {
+  width: 250px;
 }
 
 .w-\[260px\] {
@@ -416,6 +432,10 @@
   flex-grow: 1;
 }
 
+.table-fixed {
+  table-layout: fixed;
+}
+
 .border-collapse {
   border-collapse: collapse;
 }
@@ -454,8 +474,8 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-.grid-cols-4 {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+.grid-cols-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .flex-col {
@@ -476,6 +496,10 @@
 
 .justify-start {
   justify-content: flex-start;
+}
+
+.justify-end {
+  justify-content: flex-end;
 }
 
 .justify-center {
@@ -716,11 +740,6 @@
   background-color: rgb(30 64 175 / var(--tw-bg-opacity, 1));
 }
 
-.bg-fuchsia-800 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(134 25 143 / var(--tw-bg-opacity, 1));
-}
-
 .bg-gray-200 {
   --tw-bg-opacity: 1;
   background-color: rgb(229 231 235 / var(--tw-bg-opacity, 1));
@@ -758,11 +777,6 @@
 .bg-green-700 {
   --tw-bg-opacity: 1;
   background-color: rgb(21 128 61 / var(--tw-bg-opacity, 1));
-}
-
-.bg-indigo-800 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(55 48 163 / var(--tw-bg-opacity, 1));
 }
 
 .bg-lime-600 {
@@ -803,11 +817,6 @@
 .bg-slate-500 {
   --tw-bg-opacity: 1;
   background-color: rgb(100 116 139 / var(--tw-bg-opacity, 1));
-}
-
-.bg-violet-800 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(91 33 182 / var(--tw-bg-opacity, 1));
 }
 
 .bg-white {
@@ -894,6 +903,11 @@
   padding-bottom: 0.75rem;
 }
 
+.py-4 {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
 .py-5 {
   padding-top: 1.25rem;
   padding-bottom: 1.25rem;
@@ -971,14 +985,14 @@
   line-height: 1.25rem;
 }
 
-.text-xl {
-  font-size: 1.25rem;
-  line-height: 1.75rem;
-}
-
 .text-xs {
   font-size: 0.75rem;
   line-height: 1rem;
+}
+
+.text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
 }
 
 .font-bold {
@@ -1055,11 +1069,6 @@
 .text-green-500 {
   --tw-text-opacity: 1;
   color: rgb(34 197 94 / var(--tw-text-opacity, 1));
-}
-
-.text-orange-500 {
-  --tw-text-opacity: 1;
-  color: rgb(249 115 22 / var(--tw-text-opacity, 1));
 }
 
 .text-red-500 {
@@ -1232,7 +1241,7 @@
 
 /* custom CSS  */
 
-.pg-dashboard input[type="text"]:focus{
+.pg-dashboard input[type="text"]:focus {
   box-shadow: none !important;
 }
 
@@ -1300,7 +1309,6 @@
   resize: vertical;
   border-radius: 6px !important;
   padding: 4px;
-  font-family: "Poppins" !important;
   font-weight: 500;
   font-size: 13px;
 }
@@ -1310,7 +1318,6 @@
   resize: vertical;
   border-radius: 6px !important;
   padding: 4px;
-  font-family: "Poppins" !important;
   font-weight: 500;
   font-size: 13px;
 }
@@ -1335,13 +1342,11 @@
 
 .pg-setting-input-text .components-input-control__input {
   padding: 1px;
-  font-family: "Poppins" !important;
   font-weight: 500;
   font-size: 13px;
 }
 
 .pg-setting-input-text .components-select-control__input {
-  font-family: "Poppins" !important;
   font-weight: 500;
   font-size: 13px;
   border: 1px solid #1f2937 !important;
@@ -1359,29 +1364,24 @@
 }
 
 .pg-font {
-  font-family: "Poppins" !important;
 }
 
 .pg-setting-input-text .components-panel__body {
-  font-family: "Poppins" !important;
   font-weight: 500;
   font-size: 13px;
 }
 
 .pg-setting-input-text .components-panel__body-title {
-  font-family: "Poppins" !important;
   font-weight: 500;
   font-size: 13px;
 }
 
 .pg-setting-input-text .components-base-control__field label {
-  font-family: "Poppins" !important;
   font-weight: 500;
   font-size: 13px;
 }
 
 .pg-setting-input-text .components-base-control__help {
-  font-family: "Poppins" !important;
   /* font-weight: 500; */
   /* font-size: 13px; */
 }
@@ -1473,7 +1473,6 @@
 /* gradient picker edit  */
 
 /* .pg-setting-css-components .components-button {
-	font-family: "Poppins" !important;
 	
 	display: flex;
 	padding-top: 0.5rem;
@@ -1532,9 +1531,6 @@
 /* dashnoard */
 
 .pg-dashboard {
-  font-family: "Poppins" !important;
-  font-weight: 500;
-  font-size: 13px;
 }
 
 .pg-dashboard h2 {
