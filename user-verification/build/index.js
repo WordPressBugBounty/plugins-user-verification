@@ -2963,6 +2963,30 @@ function Html(props) {
   function generate3Digit() {
     return Math.floor(100 + Math.random() * 900);
   }
+  function escapeHTML(str) {
+    const map = {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#039;"
+    };
+    return str.replace(/[&<>"']/g, function (match) {
+      return map[match];
+    });
+  }
+  function unescapeHTML(str) {
+    const map = {
+      "&amp;": "&",
+      "&lt;": "<",
+      "&gt;": ">",
+      "&quot;": '"',
+      "&#039;": "'"
+    };
+    return str.replace(/&amp;|&lt;|&gt;|&quot;|&#039;/g, function (match) {
+      return map[match];
+    });
+  }
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     onChange(options);
   }, [options]);
@@ -3231,16 +3255,18 @@ function Html(props) {
     value: options?.email_templates_data?.user_registered?.html,
     className: "!py-1 h-[300px] px-2 !border-2 !border-[#8c8f94] !border-solid w-full ",
     onChange: newVal => {
+      console.log(newVal);
       var optionsX = {
         ...options,
         email_templates_data: {
           ...options.email_templates_data,
           user_registered: {
             ...options.email_templates_data.user_registered,
-            html: newVal.target.value
+            html: newVal
           }
         }
       };
+      console.log(optionsX);
       setoptions(optionsX);
     }
   }))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", {
@@ -7072,7 +7098,7 @@ function Html(props) {
     //setisProFeature(optionData?.license?.activated ? false : true);
   }, [optionData]);
   function updateOption() {
-    console.log(optionData);
+    console.log(optionData.email_templates_data);
     setisLoading(true);
     _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_3___default()({
       path: "/user-verification/v2/update_options",
@@ -8012,26 +8038,28 @@ function Html(props) {
   if (!props.warn) {
     return null;
   }
-  const [content, setContent] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)('');
-
-  // console.log(props.id);
-
+  const [content, setContent] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)("");
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     //tinymce.execCommand('mceAddEditor', true, props.id);
 
     // console.log(props.id);
 
-    // wp.editor.initialize(props.id, {
-    //   tinymce: {
-    //     wpautop: true,
-    //     toolbar1:
-    //       "bold italic underline strikethrough | bullist numlist | blockquote hr wp_more | alignleft aligncenter alignright | link unlink | fullscreen | wp_adv",
-    //     toolbar2:
-    //       "formatselect alignjustify forecolor | pastetext removeformat charmap | outdent indent | undo redo | wp_help",
-    //   },
-    //   quicktags: true,
-    //   mediaButtons: true,
-    // });
+    wp.editor.initialize(props.id, {
+      tinymce: {
+        wpautop: true,
+        toolbar1: "bold italic underline strikethrough | bullist numlist | blockquote hr wp_more | alignleft aligncenter alignright | link unlink | fullscreen | wp_adv",
+        toolbar2: "formatselect alignjustify forecolor | pastetext removeformat charmap | outdent indent | undo redo | wp_help",
+        setup: editor => {
+          editor.on("change", e => {
+            const newContent = editor.getContent(); // Get the updated content
+            // console.log(newContent);
+            props.onChange(newContent);
+          });
+        }
+      },
+      quicktags: true,
+      mediaButtons: true
+    });
 
     // Function to capture content change
     // const updateContent = () => {
@@ -8050,17 +8078,19 @@ function Html(props) {
     //   document.getElementById(props.id).removeEventListener('input', updateContent);
     // };
 
-    tinymce.init({
-      selector: "#" + props.id,
-      toolbar: "undo redo print spellcheckdialog formatpainter | blocks fontfamily fontsize | bold italic underline forecolor backcolor | link image | alignleft aligncenter alignright alignjustify lineheight | checklist bullist numlist indent outdent | removeformat",
-      height: "500px",
-      setup: editor => {
-        editor.on("change", e => {
-          const newContent = editor.getContent(); // Get the updated content
-          // console.log(newContent); props.onChange(newContent);
-        });
-      }
-    });
+    // tinymce.init({
+    // 	selector: "#" + props.id,
+    // 	toolbar:
+    // 		"undo redo print spellcheckdialog formatpainter | blocks fontfamily fontsize | bold italic underline forecolor backcolor | link image | alignleft aligncenter alignright alignjustify lineheight | checklist bullist numlist indent outdent | removeformat",
+    // 	height: "500px",
+    // 	setup: (editor) => {
+    // 		editor.on("change", (e) => {
+    // 			const newContent = editor.getContent(); // Get the updated content
+    // 			console.log(newContent);
+    // 			props.onChange(newContent);
+    // 		});
+    // 	},
+    // });
   }, []);
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("textarea", {
     className: props.className,
