@@ -375,6 +375,10 @@
   width: 400px;
 }
 
+.w-\[600px\] {
+  width: 600px;
+}
+
 .w-\[800px\] {
   width: 800px;
 }
@@ -496,10 +500,6 @@
 
 .justify-start {
   justify-content: flex-start;
-}
-
-.justify-end {
-  justify-content: flex-end;
 }
 
 .justify-center {
@@ -988,11 +988,6 @@
 .text-xs {
   font-size: 0.75rem;
   line-height: 1rem;
-}
-
-.text-xl {
-  font-size: 1.25rem;
-  line-height: 1.75rem;
 }
 
 .font-bold {

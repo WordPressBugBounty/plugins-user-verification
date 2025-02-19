@@ -3003,6 +3003,8 @@ function Html(props) {
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Email settings", "user-verification")), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
     className: "text-base mb-7"
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Customize email settings.", "user-verification"), " "), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "flex "
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "flex my-5 justify-between items-center "
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", {
     className: "w-[400px]",
@@ -3073,6 +3075,11 @@ function Html(props) {
   })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "my-5"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: " no-underline px-4 py-2 rounded-sm bg-gray-700 hover:bg-gray-700 text-white  whitespace-nowrap  hover:text-white ",
+    onClick: ev => {
+      console.log("Reset to Default");
+    }
+  }, "Reset to Default"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "my-1"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "p-4 cursor-pointer bg-gray-400 hover:bg-gray-500 flex items-center  gap-2",
@@ -3251,11 +3258,11 @@ function Html(props) {
     className: "w-[400px]",
     htmlFor: "emailVerification"
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Email body", "user-verification")), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_input_textarea__WEBPACK_IMPORTED_MODULE_7__["default"], {
-    id: `user_registered-${generate3Digit()}`,
+    id: `user_registered`,
     value: options?.email_templates_data?.user_registered?.html,
     className: "!py-1 h-[300px] px-2 !border-2 !border-[#8c8f94] !border-solid w-full ",
     onChange: newVal => {
-      console.log(newVal);
+      console.log(options);
       var optionsX = {
         ...options,
         email_templates_data: {
@@ -3266,8 +3273,20 @@ function Html(props) {
           }
         }
       };
-      console.log(optionsX);
       setoptions(optionsX);
+
+      // var optionsX = {
+      // 	...options,
+      // 	email_templates_data: {
+      // 		...options.email_templates_data,
+      // 		user_registered: {
+      // 			...options.email_templates_data.user_registered,
+      // 			html: newVal,
+      // 		},
+      // 	},
+      // };
+      // console.log(optionsX);
+      // setoptions(optionsX);
     }
   }))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", {
     htmlFor: ""
@@ -3494,7 +3513,7 @@ function Html(props) {
     className: "w-[400px]",
     htmlFor: "emailVerification"
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Email body", "user-verification")), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_input_textarea__WEBPACK_IMPORTED_MODULE_7__["default"], {
-    id: `email_confirmed-${generate3Digit()}`,
+    id: `email_confirmed`,
     value: options?.email_templates_data?.email_confirmed?.html,
     className: "!py-1 h-[300px] px-2 !border-2 !border-[#8c8f94] !border-solid w-full ",
     onChange: newVal => {
@@ -3504,7 +3523,7 @@ function Html(props) {
           ...options.email_templates_data,
           email_confirmed: {
             ...options.email_templates_data.email_confirmed,
-            html: newVal.target.value
+            html: newVal
           }
         }
       };
@@ -3731,7 +3750,7 @@ function Html(props) {
     className: "w-[400px]",
     htmlFor: "emailVerification"
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Email body", "user-verification")), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_input_textarea__WEBPACK_IMPORTED_MODULE_7__["default"], {
-    id: `email_resend_key-${generate3Digit()}`,
+    id: `email_resend_key`,
     value: options?.email_templates_data?.email_resend_key?.html,
     className: "!py-1 h-[300px] px-2 !border-2 !border-[#8c8f94] !border-solid w-full ",
     onChange: newVal => {
@@ -3741,7 +3760,7 @@ function Html(props) {
           ...options.email_templates_data,
           email_resend_key: {
             ...options.email_templates_data.email_resend_key,
-            html: newVal.target.value
+            html: newVal
           }
         }
       };
@@ -3972,7 +3991,7 @@ function Html(props) {
     className: "w-[400px]",
     htmlFor: "emailVerification"
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Email body", "user-verification")), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_input_textarea__WEBPACK_IMPORTED_MODULE_7__["default"], {
-    id: `send_mail_otp-${generate3Digit()}`,
+    id: `send_mail_otp`,
     value: options?.email_templates_data?.send_mail_otp?.html,
     className: "!py-1 h-[300px] px-2 !border-2 !border-[#8c8f94] !border-solid w-full ",
     onChange: newVal => {
@@ -3982,7 +4001,7 @@ function Html(props) {
           ...options.email_templates_data,
           send_mail_otp: {
             ...options.email_templates_data.send_mail_otp,
-            html: newVal.target.value
+            html: newVal
           }
         }
       };
@@ -4213,7 +4232,7 @@ function Html(props) {
     className: "w-[400px]",
     htmlFor: "emailVerification"
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Email body", "user-verification")), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_input_textarea__WEBPACK_IMPORTED_MODULE_7__["default"], {
-    id: `send_magic_login_url--${generate3Digit()}`,
+    id: `send_magic_login_url`,
     value: options?.email_templates_data?.send_magic_login_url?.html,
     className: "!py-1 h-[300px] px-2 !border-2 !border-[#8c8f94] !border-solid w-full ",
     onChange: newVal => {
@@ -4223,7 +4242,7 @@ function Html(props) {
           ...options.email_templates_data,
           send_magic_login_url: {
             ...options.email_templates_data.send_magic_login_url,
-            html: newVal.target.value
+            html: newVal
           }
         }
       };
@@ -4275,7 +4294,7 @@ function Html(props) {
     className: "flex items-center gap-2"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("pre", {
     className: "!my-1"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("code", null, `{magic_login_url}`)), " ", `=>`, " Magic login url"), "Available parameter for this email template")))));
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("code", null, `{magic_login_url}`)), " ", `=>`, " Magic login url"), "Available parameter for this email template")))))));
 }
 class EmailTemplates extends Component {
   constructor(props) {
@@ -6716,63 +6735,63 @@ const defaultData = {
     generic_mail_block: "no",
     blocked_generic_mail: [""]
   },
-  logo_id: "69",
+  logo_id: "",
   mail_wpautop: "yes",
   email_templates_data: {
     user_registered: {
       name: "New User Registration",
       enable: "yes",
       email_bcc: "",
-      email_from_name: "Wordpress",
+      email_from_name: "",
       email_from: "",
       reply_to_name: "",
       reply_to: "",
       subject: "New user submitted - {site_url}",
-      html: '<div style="background: #f5f5f5;color: #333;font-size: 14px;line-height: 20px;font-family: Arial, sans-serif">\r\n<div style="width: 600px;margin: 0 auto">\r\n<div class="header" style="border-bottom: 1px solid #ddd;padding: 20px 0;text-align: center"><strong style="font-size: 20px">{site_name}</strong></div>\r\n<div class="content" style="padding: 10px 0 40px">\r\n<p style="font-size: 14px;line-height: 20px;color: #333;font-family: Arial, sans-serif">Hello {user_name}, Did you forget to verify your account.</p>\r\n\r\n<h4 style="font-size: 14px;line-height: 20px;color: #333;font-family: Arial, sans-serif"><em><span style="color: #333333;font-family: Arial, sans-serif">Please verify your account by clicking the link below</span></em></h4>\r\n<p style="font-size: 14px;line-height: 20px;color: #333;font-family: Arial, sans-serif"><a class="btn" style="color: #fff;border-radius: 3px;text-decoration: none;background-color: #51b3ff;padding: 10px 20px;font-size: 14px;font-family: Arial, sans-serif" href="{ac_activaton_url}">Activate account</a></p>\r\n\r\n</div>\r\n<div class="footer" style="border-top: 1px solid #ddd;padding: 20px 0;clear: both;text-align: center"><small style="font-size: 11px">{site_name} - {site_description}</small></div>\r\n</div>\r\n</div>'
+      html: ''
     },
     email_confirmed: {
       name: "Email Verification Confirmed",
       enable: "yes",
       email_bcc: "",
-      email_from_name: "Wordpress",
+      email_from_name: "",
       email_from: "",
       reply_to_name: "",
       reply_to: "",
       subject: "New user confirmed - {site_url}",
-      html: '&nbsp;\r\n<div style="background: #f5f5f5;color: #333;font-size: 14px;line-height: 20px;font-family: Arial, sans-serif">\r\n<div style="width: 600px;margin: 0 auto">\r\n<div class="header" style="border-bottom: 1px solid #ddd;padding: 20px 0;text-align: center">\r\n\r\n<strong style="font-size: 20px">{site_name}</strong>\r\n\r\n</div>\r\n<div class="content" style="padding: 10px 0 40px">\r\n<p style="font-size: 14px;line-height: 20px;color: #333;font-family: Arial, sans-serif">{user_name} has successfully joined to {site_name}</p>\r\n\r\n</div>\r\n<div class="footer" style="border-top: 1px solid #ddd;padding: 20px 0;clear: both;text-align: center"><small style="font-size: 11px">{site_name} - {site_description}</small></div>\r\n</div>\r\n</div>'
+      html: ''
     },
     email_resend_key: {
       name: "Resend Activation Key",
       enable: "yes",
       email_bcc: "",
-      email_from_name: "Wordpress",
+      email_from_name: "",
       email_from: "",
       reply_to_name: "",
       reply_to: "",
       subject: "Please verify account - {site_url}",
-      html: 'Hi {user_name},\r\n\r\nThank you for signing up! Please verify your email address by clicking the link below:\r\n\r\n<a class="btn" href="{ac_activaton_url}">Verify My Email</a>\r\n\r\nThis link will expire in 24 hours. If you didn’t create this account, please ignore this email.\r\n\r\nWelcome aboard,\r\n\r\n{site_name} - {site_description}'
+      html: ''
     },
     send_mail_otp: {
       name: "Send Mail OTP",
       enable: "yes",
       email_bcc: "",
-      email_from_name: "Wordpress",
+      email_from_name: "",
       email_from: "",
       reply_to_name: "",
       reply_to: "",
       subject: "OTP - {site_url}",
-      html: "Hi {user_name},\r\n\r\nYour one-time password (OTP) is: <strong>{otp_code}</strong>\r\n\r\nThis code is valid for the next 10 minutes. Please use it to complete your verification.\r\n\r\nIf you didn\\'t request this, please ignore this email.\r\n\r\nThank you,\r\n\r\n{site_name} - {site_description}"
+      html: ""
     },
     send_magic_login_url: {
       name: "Send Magic Login URL",
       enable: "yes",
       email_bcc: "",
-      email_from_name: "Wordpress",
+      email_from_name: "",
       email_from: "",
       reply_to_name: "",
       reply_to: "",
       subject: "Magic Login - {site_url}",
-      html: 'Hi <strong>{user_name}</strong>,\r\n\r\nClick the link below to securely log in to your account—no password needed!\r\n\r\n<strong><a href="{magic_login_url}">Magic Login</a></strong>\r\n\r\nThis link is valid for the next 15 minutes. If you didn\\\'t request this, please ignore this email.\r\n\r\nThanks,\r\n\r\n{site_name} - {site_description}'
+      html: ''
     }
   },
   recaptcha: {
@@ -6885,7 +6904,6 @@ function Html(props) {
   var [optionData, setoptionData] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_6__.useState)({}); // Using the hook.
   var [optionDataSaved, setoptionDataSaved] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_6__.useState)({}); // Using the hook.
 
-  // console.log(optionData, optionDataSaved);
   var [dashboardTabs, setdashboardTabs] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_6__.useState)([{
     name: "overview",
     title: "Overview",
@@ -7001,7 +7019,6 @@ function Html(props) {
 
   // 			if (res.length != 0) {
   // 				var resX = { ...res };
-  // console.log("fetched");
 
   // 				setoptionDataSaved(resX);
   // 				setoptionData(resX);
@@ -7025,7 +7042,7 @@ function Html(props) {
           const resX = {
             ...res
           };
-          // console.log(resX);
+          console.log(resX);
           if (Object.keys(resX).length === 0) {
             setoptionDataSaved(_defaultData__WEBPACK_IMPORTED_MODULE_9__.defaultData);
             setoptionData(_defaultData__WEBPACK_IMPORTED_MODULE_9__.defaultData);
@@ -7034,17 +7051,12 @@ function Html(props) {
             setoptionData(resX);
           }
         }
-      } catch (error) {
-        console.error("Error fetching options:", error);
-      } finally {
+      } catch (error) {} finally {
         setisLoading(false);
       }
     };
     fetchData();
   }, []);
-
-  // console.log(optionData);
-
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_6__.useEffect)(() => {
     _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_3___default()({
       path: "/user-verification/v2/user_roles_list",
@@ -7067,8 +7079,6 @@ function Html(props) {
       method: "POST",
       data: {}
     }).then(res => {
-      // console.log(res);
-
       var pageListX = [];
       Object.entries(res).map(page => {
         var index = page[0];
@@ -7085,7 +7095,6 @@ function Html(props) {
       method: "POST",
       data: {}
     }).then(res => {
-      console.log(res);
       setstatsCounter(res);
     });
   }, []);
@@ -7098,7 +7107,6 @@ function Html(props) {
     //setisProFeature(optionData?.license?.activated ? false : true);
   }, [optionData]);
   function updateOption() {
-    console.log(optionData.email_templates_data);
     setisLoading(true);
     _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_3___default()({
       path: "/user-verification/v2/update_options",
@@ -7231,6 +7239,7 @@ function Html(props) {
   }
   function onChangeEmailTemplates(options) {
     // var optionDataX = { options };
+
     setoptionData(options);
   }
   function onChangeSpamProtection(options) {
@@ -8038,28 +8047,35 @@ function Html(props) {
   if (!props.warn) {
     return null;
   }
+  var value = props.value;
+  console.log(value);
   const [content, setContent] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)("");
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     //tinymce.execCommand('mceAddEditor', true, props.id);
 
     // console.log(props.id);
 
-    wp.editor.initialize(props.id, {
-      tinymce: {
-        wpautop: true,
-        toolbar1: "bold italic underline strikethrough | bullist numlist | blockquote hr wp_more | alignleft aligncenter alignright | link unlink | fullscreen | wp_adv",
-        toolbar2: "formatselect alignjustify forecolor | pastetext removeformat charmap | outdent indent | undo redo | wp_help",
-        setup: editor => {
-          editor.on("change", e => {
-            const newContent = editor.getContent(); // Get the updated content
-            // console.log(newContent);
-            props.onChange(newContent);
-          });
-        }
-      },
-      quicktags: true,
-      mediaButtons: true
-    });
+    // wp.editor.initialize(props.id, {
+    // 	tinymce: {
+    // 		wpautop: true,
+    // 		toolbar1:
+    // 			"bold italic underline strikethrough | bullist numlist | blockquote hr wp_more | alignleft aligncenter alignright | link unlink | fullscreen | wp_adv",
+    // 		toolbar2:
+    // 			"formatselect alignjustify forecolor | pastetext removeformat charmap | outdent indent | undo redo | wp_help",
+    // 		setup: (editor) => {
+    // 			editor.on("change", (e) => {
+    // 				const newContent = editor.getContent(); // Get the updated content
+    // 				// console.log(newContent);
+    // 				props.onChange(newContent);
+    // 			});
+    // 			editor.on("init", () => {
+    // 				editor.setContent(value);
+    // 			});
+    // 		},
+    // 	},
+    // 	quicktags: true,
+    // 	mediaButtons: true,
+    // });
 
     // Function to capture content change
     // const updateContent = () => {
