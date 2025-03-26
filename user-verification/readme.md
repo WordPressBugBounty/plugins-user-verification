@@ -4,7 +4,7 @@
 	Tags:  User Verification, Email OTP, Block Spam Email, Passwordless login, Email Verification
 	Requires at least: 4.1
 	Tested up to: 6.7
-	Stable tag: 2.0.34
+	Stable tag: 2.0.35
 	License: GPLv2 or later
 	License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -130,6 +130,9 @@ Plugin is translation ready , please find the 'en.po' for default translation fi
 
 
 == Changelog ==
+
+= 2.0.35 =
+* 2024-03-26 fix - Otions saving issue fixed for WooCommerce
 
 = 2.0.34 =
 * 2024-03-17 fix - Email Template HTML Editor issue fixed.

@@ -6046,6 +6046,8 @@ function Html(props) {
   var [options, setoptions] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(props.options); // Using the hook.
 
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    //console.log(options);
+
     onChange(options);
   }, [options]);
   const userRoleOptions = [{
@@ -6179,7 +6181,7 @@ function Html(props) {
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)("Display Message after successfully registration", "user-verification")), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("textarea", {
     className: "!py-1 px-2 !border-2 !border-[#8c8f94] !border-solid w-full max-w-[400px]",
     inputClass: "!py-1 px-2  border-2 border-solid",
-    val: options?.woocommerce?.message_after_registration,
+    value: options?.woocommerce?.message_after_registration,
     options: [{
       label: "No",
       value: "no"
@@ -6187,7 +6189,9 @@ function Html(props) {
       label: "Yes",
       value: "yes"
     }],
-    onChange: newVal => {
+    onChange: event => {
+      var newVal = event.target.value;
+      console.log(newVal);
       var optionsX = {
         ...options,
         woocommerce: {
@@ -7294,7 +7298,7 @@ function Html(props) {
   function onChangeTools(options) {
     var optionDataX = {
       ...optionData,
-      tools: options
+      ...options
     };
     setoptionData(optionDataX);
   }
@@ -7318,9 +7322,10 @@ function Html(props) {
     setoptionData(optionDataX);
   }
   function onChangeUserVerificationSettings(options) {
+    console.log(options);
     var optionDataX = {
       ...optionData,
-      user_verification_settings: options
+      ...options
     };
     setoptionData(optionDataX);
   }
@@ -7641,7 +7646,7 @@ function Html(props) {
   })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "flex mb-5  justify-start gap-2 items-center "
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_ThirdParty__WEBPACK_IMPORTED_MODULE_19__["default"], {
-    options: optionData?.user_verification_settings,
+    options: optionData,
     onChange: onChangeUserVerificationSettings
   }))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_tab__WEBPACK_IMPORTED_MODULE_7__["default"], {
     name: "export/import"
