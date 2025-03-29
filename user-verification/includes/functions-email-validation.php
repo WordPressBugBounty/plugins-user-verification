@@ -65,12 +65,12 @@ function isSpammy_registration_errors_block_spammer($errors, $sanitized_user_log
 
             if ($status == 'valid') {
             } else {
-                $errors->add('invalid_email', __("Sorry your email address is not valid 1.", 'user-verification'));
+                $errors->add('invalid_email', __("Sorry your email address is not valid.", 'user-verification'));
             }
         } else {
             // Handle error response
             $UserVerificationStats->add_stats('email_validation_failed');
-            $errors->add('invalid_email', __("Sorry your email address is not valid 2.", 'user-verification'));
+            $errors->add('invalid_email', __("Sorry your email address is not valid.", 'user-verification'));
 
             ////error_log("Email validation failed. Response code: " . $response_code);
         }

@@ -1,9 +1,9 @@
 <?php
 /*
-Plugin Name: User Verification
+Plugin Name: User Verification by PickPlugins
 Plugin URI: http://pickplugins.com
 Description: Verify user before access on your website.
-Version: 2.0.35
+Version: 2.0.36
 Text Domain: user-verification
 Domain Path: /languages
 Author: PickPlugins

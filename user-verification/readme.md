@@ -1,10 +1,10 @@
-=== User Verification - Email Verification, Email OTP, Block Spam Email, Passwordless login   ===
+=== Email Verification, Email OTP, Block Spam Email, Passwordless login, Magic Login - User Verification  ===
 	Contributors: PickPlugins, NafisMahmudAyon
 	Donate link: http://pickplugins.com
-	Tags:  User Verification, Email OTP, Block Spam Email, Passwordless login, Email Verification
+	Tags:  Email Verification, User Verification, Email OTP, Email Validation, Passwordless login
 	Requires at least: 4.1
 	Tested up to: 6.7
-	Stable tag: 2.0.35
+	Stable tag: 2.0.36
 	License: GPLv2 or later
 	License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -130,6 +130,9 @@ Plugin is translation ready , please find the 'en.po' for default translation fi
 
 
 == Changelog ==
+
+= 2.0.36 =
+* 2024-03-29 fix - reCAPTCHA for WooCommerce issue fixed.
 
 = 2.0.35 =
 * 2024-03-26 fix - Otions saving issue fixed for WooCommerce
