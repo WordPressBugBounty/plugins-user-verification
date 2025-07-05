@@ -3,8 +3,8 @@
 	Donate link: http://pickplugins.com
 	Tags:  Email Verification, User Verification, Email OTP, Email Validation, Passwordless login
 	Requires at least: 4.1
-	Tested up to: 6.7
-	Stable tag: 2.0.36
+	Tested up to: 6.8
+	Stable tag: 2.0.37
 	License: GPLv2 or later
 	License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -130,6 +130,10 @@ Plugin is translation ready , please find the 'en.po' for default translation fi
 
 
 == Changelog ==
+
+= 2.0.37 =
+* 2024-07-05 fix - Magic Login added
+* 2024-07-05 fix - OTP login feature down for security issue.
 
 = 2.0.36 =
 * 2024-03-29 fix - reCAPTCHA for WooCommerce issue fixed.

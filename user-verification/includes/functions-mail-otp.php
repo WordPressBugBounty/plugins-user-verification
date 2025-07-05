@@ -369,7 +369,7 @@ function user_verification_send_otp()
 
 
 
-add_filter('check_password', 'user_verification_check_password_otp_default_login', 90, 4);
+//add_filter('check_password', 'user_verification_check_password_otp_default_login', 90, 4);
 function user_verification_check_password_otp_default_login($check, $password, $hash, $user_id)
 {
 
