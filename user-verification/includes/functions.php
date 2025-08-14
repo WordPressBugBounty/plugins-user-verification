@@ -4,6 +4,8 @@ if (!defined('ABSPATH')) exit;  // if direct access
 
 
 
+
+
 function user_verification_is_verified($userid)
 {
 
@@ -719,6 +721,8 @@ if (!function_exists('user_verification_user_registered')) {
 
 
         $user_activation_status = get_user_meta($user_id, 'user_activation_status', true);
+
+        error_log("user_activation_status: $user_activation_status");
 
         if ($user_activation_status) return;
 

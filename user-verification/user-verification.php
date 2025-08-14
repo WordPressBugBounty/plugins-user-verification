@@ -3,7 +3,7 @@
 Plugin Name: User Verification by PickPlugins
 Plugin URI: http://pickplugins.com
 Description: Verify user before access on your website.
-Version: 2.0.37
+Version: 2.0.38
 Text Domain: user-verification
 Domain Path: /languages
 Author: PickPlugins
