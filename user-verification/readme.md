@@ -1,10 +1,10 @@
-=== Email Verification, Email OTP, Block Spam Email, Passwordless login, Magic Login - User Verification  ===
+=== Email Verification, Email OTP, Block Spam Email, Passwordless login, Hide Login, Magic Login - User Verification  ===
 	Contributors: PickPlugins, NafisMahmudAyon
 	Donate link: http://pickplugins.com
-	Tags:  Email Verification, User Verification, Email OTP, Email Validation, Passwordless login
+	Tags:  Email Verification, Hide Login, Email OTP, Email Validation, Passwordless login
 	Requires at least: 4.1
 	Tested up to: 6.8
-	Stable tag: 2.0.38
+	Stable tag: 2.0.39
 	License: GPLv2 or later
 	License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -147,6 +147,9 @@ isspammy.com is owned by PickPlugins and it's used to protect spam users from lo
 
 
 == Changelog ==
+
+= 2.0.39 =
+* 2025-08-23 add - Login attempt feature added
 
 = 2.0.38 =
 * 2025-08-14 add - OTP Login added with custom shortcodes.

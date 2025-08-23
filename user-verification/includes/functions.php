@@ -5,7 +5,6 @@ if (!defined('ABSPATH')) exit;  // if direct access
 
 
 
-
 function user_verification_is_verified($userid)
 {
 

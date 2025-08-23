@@ -10,7 +10,7 @@ function user_verification_form_wrap_process_otpLogin($request)
     $email = $request->get_param('email');
     $steps = (int) $request->get_param('steps');
     $otp_code =  $request->get_param('otp');
-    $gRecaptchaResponse = $request->get_param('g-recaptcha-response');
+    // $gRecaptchaResponse = $request->get_param('g-recaptcha-response');
 
 
 
@@ -25,20 +25,19 @@ function user_verification_form_wrap_process_otpLogin($request)
 
 
 
-    if (isset($gRecaptchaResponse)) :
-        $captcha = isset($gRecaptchaResponse) ? sanitize_text_field($gRecaptchaResponse) : '';
+    // if (isset($gRecaptchaResponse)) :
+    //     $captcha = isset($gRecaptchaResponse) ? sanitize_text_field($gRecaptchaResponse) : '';
 
-        $response = wp_remote_get("https://www.google.com/recaptcha/api/siteverify?secret=" . $secretkey . "&response=" . $captcha);
-        $response = json_decode($response["body"], true);
+    //     $response = wp_remote_get("https://www.google.com/recaptcha/api/siteverify?secret=" . $secretkey . "&response=" . $captcha);
+    //     $response = json_decode($response["body"], true);
 
-        if ($response["success"] != true) {
-            $error->add('recaptcha', $captcha_error);
-        }
-    endif;
+    //     if ($response["success"] != true) {
+    //         $error->add('recaptcha', $captcha_error);
+    //     }
+    // endif;
 
 
 
-    $email_data = [];
     $user = get_user_by('email', $email);
     if (empty($user)) {
         $user = get_user_by('login', $email);
@@ -108,23 +107,25 @@ function user_verification_form_wrap_process_otpLogin($request)
 
         $otp_via_mail = user_verification_send_otp_via_mail($user_data);
 
+        $UserVerificationStats = new UserVerificationStats();
 
 
         if ($otp_via_mail) {
             $response['success']['otp_sent'] = $otp_sent_success;
 
             // stats record start
-            $UserVerificationStats = new UserVerificationStats();
             $UserVerificationStats->add_stats('email_otp_sent');
             // stats record end
         } else {
-            //$response['errors']['otp_sent_error'] = $otp_sent_error;
-            $response['success']['otp_sent'] = $otp_sent_success;
+            $response['errors']['otp_sent_error'] = $otp_sent_error;
+            $UserVerificationStats->add_stats('email_otp_sent_error');
+
+            // $response['success']['otp_sent'] = $otp_sent_success;
         }
 
 
-        // $response['otp_sent'] = $otp_via_mail;
-        $response['otp_sent'] = true;
+        $response['otp_sent'] = $otp_via_mail;
+        // $response['otp_sent'] = true;
         $response['count'] = $uv_otp_count;
         $response['steps'] = $steps;
     }
@@ -134,7 +135,6 @@ function user_verification_form_wrap_process_otpLogin($request)
 
         $saved_otp = get_user_meta($user_id, 'uv_otp', true);
 
-        error_log("saved_otp: $saved_otp");
 
 
 
@@ -149,8 +149,6 @@ function user_verification_form_wrap_process_otpLogin($request)
             wp_set_auth_cookie($user_id);
             do_action('wp_login', $user->user_login, $user);
 
-
-            error_log("wp_set_current_user");
             $response['success']['logged'] = __('OTP login success.', 'user-verification');
             $response['steps'] = $steps;
 
@@ -206,7 +204,6 @@ function user_verification_send_otp_via_mail($user_data)
     $character_source = isset($user_verification_settings['email_otp']['character_source']) ? $user_verification_settings['email_otp']['character_source'] : ['uppercase', 'lowercase'];
     $password = user_verification_random_password($length, $character_source);
 
-    error_log($password);
 
     if (empty($password)) :
         $error->add('empty_otp', __('ERROR: OTP generation failed.', 'user-verification'));

@@ -3,7 +3,7 @@
 Plugin Name: User Verification by PickPlugins
 Plugin URI: http://pickplugins.com
 Description: Verify user before access on your website.
-Version: 2.0.38
+Version: 2.0.39
 Text Domain: user-verification
 Domain Path: /languages
 Author: PickPlugins
@@ -155,6 +155,9 @@ class UserVerification
 
         require_once(user_verification_plugin_dir . 'includes/functions-user-profile.php');
         require_once(user_verification_plugin_dir . 'includes/functions-rest.php');
+        //require_once(user_verification_plugin_dir . 'includes/functions-hide-login.php');
+        require_once(user_verification_plugin_dir . 'includes/functions-login-attempt.php');
+
         require_once(user_verification_plugin_dir . 'includes/functions-counter.php');
 
         require_once(user_verification_plugin_dir . 'templates/magic-login-form/index.php');
