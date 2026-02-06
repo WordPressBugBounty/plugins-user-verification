@@ -78,8 +78,8 @@ function user_verification_bulk_action_admin_notice()
         <div id="message" class="updated notice is-dismissible">
             <p>
                 <?php
-
-                echo sprintf(__('%s user account marked as verified.', 'user-verification'), esc_html($user_count));
+                /* translators: %s user count */
+                echo sprintf(esc_html_e('%s user account marked as verified.', 'user-verification'), esc_html($user_count));
 
                 ?>
             </p>
@@ -100,8 +100,8 @@ function user_verification_bulk_action_admin_notice()
         <div id="message" class="updated notice is-dismissible">
             <p>
                 <?php
-
-                echo sprintf(__('%s user account marked as unverified.', 'user-verification'), esc_html($user_count));
+                /* translators: %s user count */
+                echo sprintf(esc_html_e('%s user account marked as unverified.', 'user-verification'), esc_html($user_count));
 
                 ?>
             </p>
@@ -157,8 +157,9 @@ function uv_registration_protect_username($errors, $sanitized_user_login, $user_
     $username_blocked = user_verification_is_username_blocked($sanitized_user_login);
 
 
+
     if ($username_blocked) {
-        $errors->add('blocked_username', __("<strong>{" . esc_html($sanitized_user_login) . "}</strong> username is not allowed!", 'user-verification'));
+        $errors->add('blocked_username', sprintf("<strong>%s</strong> username is not allowed!", $sanitized_user_login));
 
         // stats record start
         $UserVerificationStats = new UserVerificationStats();
@@ -181,7 +182,12 @@ function uv_registration_protect_generic_mail($errors, $sanitized_user_login, $u
 
 
     if ($username_blocked) {
-        $errors->add('blocked_generic_mail', __("<strong>{" . esc_html($user_email) . "}</strong> generic mail addresses is not allowed!", 'user-verification'));
+        $errors->add(
+            'blocked_generic_mail',
+            /* translators: %s is User email */
+            sprintf("<strong>%s</strong> generic mail addresses is not allowed!", $user_email)
+
+        );
 
         // stats record start
         $UserVerificationStats = new UserVerificationStats();
@@ -334,7 +340,11 @@ function uv_registration_protect_blocked_domain($errors, $sanitized_user_login, 
 
 
     if ($is_blocked) {
-        $errors->add('blocked_domain', sprintf(__("This <strong>%s</strong> domain is blocked!", 'user-verification'), esc_url_raw($email_domain)));
+        $errors->add(
+            'blocked_domain',
+            /* translators: %s is Email domain */
+            sprintf(__("This <strong>%s</strong> domain is blocked!", 'user-verification'), esc_url_raw($email_domain))
+        );
 
         // stats record start
         $UserVerificationStats = new UserVerificationStats();
@@ -359,6 +369,7 @@ function uv_registration_protect_allowed_domain($errors, $sanitized_user_login, 
 
 
     if (!$is_allowed) {
+        /* translators: %s is email domain */
         $errors->add('allowed_domain', sprintf(__("This <strong>%s</strong> domain is not allowed!", 'user-verification'), esc_url_raw($email_domain)));
 
         // stats record start
@@ -385,7 +396,7 @@ function user_verification_registered_message($errors, $redirect_to)
     if ($email_verification_enable != 'yes') return $errors;
 
     $login_url = wp_login_url();
-
+    /* translators: %s is Login URL */
     $registration_success = isset($user_verification_settings['messages']['registration_success']) ? sprintf($user_verification_settings['messages']['registration_success'], $login_url) : sprintf(__('Registration complete. Please verify the mail first, then visit the <a href="%s">login page</a>.', 'user-verification'), $login_url);
 
 
@@ -465,7 +476,7 @@ function uv_filter_check_activation()
         _deprecated_function(__FUNCTION__, '1.0.46', '');
 
 
-        $html .= __('This shortcode is no longer need, only admin can see this message');
+        $html .= __('This shortcode is no longer need, only admin can see this message', 'user-verification');
     }
 
 
@@ -516,10 +527,10 @@ function uv_resend_verification_form($attr)
         <input type="hidden" name="resend_verification_hidden" value="Y">
 
         <div class="form-area">
-            <input type="email" name="email" placeholder="<?php echo __('Email address', 'user-verification'); ?>" value="">
+            <input type="email" name="email" placeholder="<?php echo esc_html_e('Email address', 'user-verification'); ?>" value="">
         </div>
         <div class="form-area">
-            <input type="submit" value="<?php echo __('Resend', 'user-verification'); ?>" name="submit">
+            <input type="submit" value="<?php echo esc_html_e('Resend', 'user-verification'); ?>" name="submit">
         </div>
 
         <div class="form-area message">
@@ -663,8 +674,7 @@ function uv_user_authentication($errors, $username, $passwords)
                 $resend_verification_url,
                 __('Resend verification email', 'user-verification')
             );
-
-            return new WP_Error('uv_authentication_failed', __($message, "user-verification"));
+            return new WP_Error('uv_authentication_failed', $message);
         }
     }
     if ($user_activation_status === '1') {
@@ -682,7 +692,7 @@ function uv_user_authentication($errors, $username, $passwords)
             __('Resend verification email', 'user-verification')
         );
 
-        return new WP_Error('uv_authentication_failed', __($message, "user-verification"));
+        return new WP_Error('uv_authentication_failed', $message);
         // return new \WP_Error('authentication_failed', $message);
     }
 
@@ -721,7 +731,6 @@ if (!function_exists('user_verification_user_registered')) {
 
         $user_activation_status = get_user_meta($user_id, 'user_activation_status', true);
 
-        error_log("user_activation_status: $user_activation_status");
 
         if ($user_activation_status) return;
 
@@ -1089,7 +1098,7 @@ function add_verification_status_filter($which)
 
     // determine which filter button was clicked, if any and set section
     $button = key(array_filter($_GET, function ($v) {
-        return __('Filter') === $v;
+        return __('Filter', 'user-verification') === $v;
     }));
     $section = $_GET['verification_status_' . $button] ?? -1;
 
@@ -1097,13 +1106,13 @@ function add_verification_status_filter($which)
     $options = implode('', array_map(function ($i) use ($ot, $section) {
         return sprintf($ot, $i, selected($i, $section, false), $i);
     }, range(0, 1)));
-    $select = sprintf($st, $which, __('Course Section...'), $options);
+    $select = sprintf($st, $which, __('Course Section...', 'user-verification'), $options);
 
     // output <select> and submit button
     //echo $select;
 
 ?>
-    <select name="verification_status_<?php echo $which; ?>" style="float:none;">
+    <select name="verification_status_<?php echo esc_attr($which); ?>" style="float:none;">
         <option value="">All Users</option>
         <option value="oldUsers" <?php selected("oldUsers", $section, true); ?>>Old Users</option>
         <option value="verified" <?php selected("verified", $section, true); ?>>Verified</option>
@@ -1112,7 +1121,7 @@ function add_verification_status_filter($which)
 <?php
 
 
-    submit_button(__('Filter'), null, $which, false);
+    //submit_button(__('Filter'), null, $which, false);
 }
 add_action('restrict_manage_users', 'add_verification_status_filter');
 
@@ -1126,7 +1135,7 @@ function filter_users_by_course_section($query)
 
     if (is_admin() && 'users.php' == $pagenow) {
         $button = key(array_filter($_GET, function ($v) {
-            return __('Filter') === $v;
+            return __('Filter', 'user-verification') === $v;
         }));
 
         $status = isset($_GET['verification_status_' . $button]) ? $_GET['verification_status_' . $button] : '';
@@ -1176,3 +1185,19 @@ function user_verification_recursive_sanitize_arr($array)
     }
     return $array;
 }
+
+
+
+add_action('wp_print_footer_scripts', function () {
+
+    global $UserVerificationVars;
+?>
+    <script>
+        <?php
+        $user_verification_scripts_vars = wp_json_encode($UserVerificationVars, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        ?>
+        const user_verification_scripts_vars = <?php echo $user_verification_scripts_vars; ?>;
+    </script>
+
+<?php
+});

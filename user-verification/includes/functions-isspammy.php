@@ -14,9 +14,7 @@ function isspammy_trash_comment($comment_id, $comment)
 
   $report_comment_trash = isset($user_verification_settings['isspammy']['report_comment_trash']) ? $user_verification_settings['isspammy']['report_comment_trash'] : 'no';
 
-  ////error_log($isSpammyApiKey);
 
-  ////error_log(serialize($comment));
 
   if ($report_comment_trash != 'yes') return;
 
@@ -39,7 +37,6 @@ function isspammy_trash_comment($comment_id, $comment)
     'apiKey' => $isSpammyApiKey,
   );
 
-  ////error_log(wp_json_encode($post_data));
   $UserVerificationStats->add_stats('email_validation_request');
 
   $response = wp_remote_post($api_url, array(
@@ -52,7 +49,6 @@ function isspammy_trash_comment($comment_id, $comment)
     'data_format' => 'body',
   ));
 
-  ////error_log(wp_remote_retrieve_body($response));
 
   if (is_wp_error($response)) {
 
@@ -141,9 +137,7 @@ function isspammy_spam_comment($comment_id, $comment)
 
   $report_comment_spam = isset($user_verification_settings['isspammy']['report_comment_spam']) ? $user_verification_settings['isspammy']['report_comment_spam'] : 'no';
 
-  ////error_log($isSpammyApiKey);
 
-  ////error_log(serialize($comment));
 
   if ($report_comment_spam != 'yes') return;
 
@@ -166,7 +160,6 @@ function isspammy_spam_comment($comment_id, $comment)
     'apiKey' => $isSpammyApiKey,
   );
 
-  ////error_log(wp_json_encode($post_data));
   $UserVerificationStats->add_stats('email_validation_request');
 
   $response = wp_remote_post($api_url, array(
@@ -179,7 +172,6 @@ function isspammy_spam_comment($comment_id, $comment)
     'data_format' => 'body',
   ));
 
-  ////error_log(wp_remote_retrieve_body($response));
 
   if (is_wp_error($response)) {
 
@@ -264,9 +256,7 @@ function registration_errors_block_spammer($errors, $sanitized_user_login, $user
   $block_register = isset($user_verification_settings['isspammy']['block_register']) ? $user_verification_settings['isspammy']['block_register'] : 'no';
 
 
-  ////error_log($isSpammyApiKey);
 
-  ////error_log(serialize($comment));
   if (empty($isSpammyApiKey)) return $errors;
   if ($block_register != 'yes') return $errors;
 
@@ -303,7 +293,7 @@ function registration_errors_block_spammer($errors, $sanitized_user_login, $user
     $UserVerificationStats->add_stats('spam_comment_report_failed');
 
     $error_message = $response->get_error_message();
-    $errors->add('email_validation_failed', __("email validation failed. $error_message", 'user-verification'));
+    $errors->add('email_validation_failed', sprintf(__('email validation failed', 'user-verification'), $error_message));
 
     // Handle error
   } else {
@@ -312,7 +302,6 @@ function registration_errors_block_spammer($errors, $sanitized_user_login, $user
       $body = wp_remote_retrieve_body($response);
       $result = json_decode($body, true);
 
-      //error_log($result);
 
       $found = isset($result['found']) ? $result['found'] : false;
 
@@ -343,12 +332,14 @@ function user_verification_comment_form_privacy_notice()
   $isspammy = isset($user_verification_settings['isspammy']) ? $user_verification_settings['isspammy'] : array();
 
   $comment_form_notice = isset($isspammy['comment_form_notice']) ? $isspammy['comment_form_notice'] : 'no';
+  /* translators: %s is privacy URL */
   $comment_form_notice_text = !empty($isspammy['comment_form_notice_text']) ? sprintf($isspammy['comment_form_notice_text'], 'https://isspammy.com/privacy-policy/') :
+    /* translators: %s is privacy URL */
     sprintf(__('This site uses User Verification plugin to reduce spam. <a href="%s" target="_blank" rel="nofollow noopener">See how your comment data is processed</a>.', 'user-verification'), 'https://isspammy.com/privacy-policy/');
 
   if ($comment_form_notice != 'yes') return;
 
-  echo apply_filters('user_verification_comment_form_notice_text', wp_kses_post($comment_form_notice_text));
+  echo wp_kses_post(apply_filters('user_verification_comment_form_notice_text', $comment_form_notice_text));
 }
 
 
@@ -376,7 +367,7 @@ function user_verification_pre_comment_approved($approved, $commentdata)
 
   // Check for error in the response
   if (is_wp_error($response)) {
-    echo __("Unexpected Error! The query returned with an error.", 'user-verification');
+    echo esc_html_e("Unexpected Error! The query returned with an error.", 'user-verification');
   } else {
     //var_dump($response);//uncomment it if you want to look at the full response
 
@@ -428,7 +419,7 @@ function user_verification_preprocess_comment($commentdata)
 
   // Check for error in the response
   if (is_wp_error($response)) {
-    echo __("Unexpected Error! The query returned with an error.", 'user-verification');
+    echo esc_html_e("Unexpected Error! The query returned with an error.", 'user-verification');
   } else {
     //var_dump($response);//uncomment it if you want to look at the full response
 
@@ -471,7 +462,7 @@ function user_verification_duplicate_comment_id($dupe_id, $commentdata)
 
   // Check for error in the response
   if (is_wp_error($response)) {
-    echo __("Unexpected Error! The query returned with an error.", 'user-verification');
+    echo esc_html_e("Unexpected Error! The query returned with an error.", 'user-verification');
   } else {
     //var_dump($response);//uncomment it if you want to look at the full response
 

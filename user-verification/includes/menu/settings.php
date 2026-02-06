@@ -8,6 +8,7 @@ $user_verification_settings_tab = array();
 
 $user_verification_settings_tab[] = array(
     'id' => 'email_verification',
+    /* translators: %s is Icon HTML */
     'title' => sprintf(__('%s Email Verification', 'user-verification'), '<i class="far fa-envelope"></i>'),
     'priority' => 1,
     'active' => ($current_tab == 'email_verification') ? true : false,
@@ -15,6 +16,7 @@ $user_verification_settings_tab[] = array(
 
 $user_verification_settings_tab[] = array(
     'id' => 'email_otp',
+    /* translators: %s is Icon HTML */
     'title' => sprintf(__('%s  Email OTP', 'user-verification'), '<i class="fas fa-key"></i>'),
     'priority' => 2,
     'active' => ($current_tab == 'email_otp') ? true : false,
@@ -22,6 +24,8 @@ $user_verification_settings_tab[] = array(
 
 //$user_verification_settings_tab[] = array(
 //    'id' => 'sms_otp',
+/* translators: %s is Icon HTML */
+
 //    'title' => sprintf(__('%s  SMS OTP','user-verification'),'<i class="fas fa-sms"></i>'),
 //    'priority' => 2,
 //    'active' => ($current_tab == 'sms_otp') ? true : false,
@@ -29,6 +33,7 @@ $user_verification_settings_tab[] = array(
 
 $user_verification_settings_tab[] = array(
     'id' => 'spam_protection',
+    /* translators: %s is Icon HTML */
     'title' => sprintf(__('%s Spam Protection', 'user-verification'), '<i class="fas fa-user-secret"></i>'),
     'priority' => 5,
     'active' => ($current_tab == 'spam_protection') ? true : false,
@@ -36,6 +41,7 @@ $user_verification_settings_tab[] = array(
 
 $user_verification_settings_tab[] = array(
     'id' => 'isspammy',
+    /* translators: %s is Icon HTML */
     'title' => sprintf(__('%s IsSpammy Protection', 'user-verification'), '<i class="fas fa-bug"></i>'),
     'priority' => 5,
     'active' => ($current_tab == 'isspammy') ? true : false,
@@ -44,6 +50,7 @@ $user_verification_settings_tab[] = array(
 
 $user_verification_settings_tab[] = array(
     'id' => 'recaptcha',
+    /* translators: %s is Icon HTML */
     'title' => sprintf(__('%s reCAPTCHA', 'user-verification'), '<i class="fas fa-robot"></i>'),
     'priority' => 10,
     'active' => ($current_tab == 'recaptcha') ? true : false,
@@ -52,6 +59,7 @@ $user_verification_settings_tab[] = array(
 
 $user_verification_settings_tab[] = array(
     'id' => 'email_templates',
+    /* translators: %s is Icon HTML */
     'title' => sprintf(__('%s Email Templates', 'user-verification'), '<i class="fas fa-envelope-open-text"></i>'),
     'priority' => 10,
     'active' => ($current_tab == 'email_templates') ? true : false,
@@ -73,6 +81,7 @@ $user_verification_settings_tab[] = array(
 
 $user_verification_settings_tab[] = array(
     'id' => 'tools',
+    /* translators: %s is Icon HTML */
     'title' => sprintf(__('%s Tools', 'user-verification'), '<i class="fas fa-magic"></i>'),
     'priority' => 80,
     'active' => ($current_tab == 'tools') ? true : false,
@@ -82,6 +91,7 @@ $user_verification_settings_tab[] = array(
 
 $user_verification_settings_tab[] = array(
     'id' => 'help_support',
+    /* translators: %s is Icon HTML */
     'title' => sprintf(__('%s Help & support', 'user-verification'), '<i class="far fa-question-circle"></i>'),
     'priority' => 90,
     'active' => ($current_tab == 'help_support') ? true : false,
@@ -91,6 +101,7 @@ $user_verification_settings_tab[] = array(
 
 //$user_verification_settings_tab[] = array(
 //    'id' => 'buy_pro',
+/* translators: %s is Icon HTML */
 //    'title' => sprintf(__('%s Buy Pro','user-verification'),'<i class="fas fa-hands-helping"></i>'),
 //    'priority' => 95,
 //    'active' => ($current_tab == 'buy_pro') ? true : false,
@@ -121,8 +132,10 @@ $user_verification_settings = get_option('user_verification_settings');
 ?>
 <div class="wrap">
     <div id="icon-tools" class="icon32"><br></div>
-    <h2><?php echo sprintf(__('%s Settings', 'user-verification'), user_verification_plugin_name) ?></h2>
-    <form method="post" action="<?php echo str_replace('%7E', '~', esc_url_raw($_SERVER['REQUEST_URI'])); ?>">
+    <h2><?php
+        /* translators: %s is Plugin Name */
+        echo sprintf(esc_html_e('%s Settings', 'user-verification'), esc_html(user_verification_plugin_name)) ?></h2>
+    <form method="post" action="<?php echo esc_url(str_replace('%7E', '~', ($_SERVER['REQUEST_URI']))); ?>">
         <input type="hidden" name="user_verification_hidden" value="Y">
         <input type="hidden" name="tab" value="<?php echo esc_attr($current_tab); ?>">
         <?php
@@ -132,7 +145,7 @@ $user_verification_settings = get_option('user_verification_settings');
                 do_action('user_verification_settings_save');
         ?>
                 <div class="updated notice  is-dismissible">
-                    <p><strong><?php _e('Changes Saved.', 'user-verification'); ?></strong></p>
+                    <p><strong><?php esc_html_e('Changes Saved.', 'user-verification'); ?></strong></p>
                 </div>
         <?php
             }
@@ -198,7 +211,7 @@ $user_verification_settings = get_option('user_verification_settings');
             <div class="clear clearfix"></div>
             <p class="submit">
                 <?php wp_nonce_field('user_verification_nonce'); ?>
-                <input class="button button-primary" type="submit" name="Submit" value="<?php _e('Save Changes', 'user-verification'); ?>" />
+                <input class="button button-primary" type="submit" name="Submit" value="<?php esc_html_e('Save Changes', 'user-verification'); ?>" />
             </p>
         </div>
     </form>

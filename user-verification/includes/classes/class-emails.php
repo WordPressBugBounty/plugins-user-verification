@@ -27,7 +27,6 @@ class class_user_verification_emails
         $attachments = isset($email_data['attachments']) ? $email_data['attachments'] : '';
 
 
-        //error_log($email_body);
 
 
         //$headers = [];

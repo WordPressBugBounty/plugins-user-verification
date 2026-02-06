@@ -48,13 +48,13 @@ class class_user_verification_notices
 ?>
             <div class="notice">
 
-                <h3>⚡ Block Spam, Temporary, Invalid Emials on registration, <strong><a target="_blank" href="<?php echo admin_url(); ?>users.php?page=user_verification_dashboard">Try Now</a></strong></h3>
+                <h3>⚡ Block Spam, Temporary, Invalid Emials on registration, <strong><a target="_blank" href="<?php echo esc_url(admin_url() . "users.php?page=user_verification_dashboard"); ?>">Try Now</a></strong></h3>
 
-                <p> <a style="margin: 0 20px;" class="" href="<?php echo esc_url_raw($actionurl) ?>">❌ Hide Notice</a></p>
+                <p> <a style="margin: 0 20px;" class="" href="<?php echo esc_url($actionurl) ?>">❌ Hide Notice</a></p>
             </div>
         <?php
         endif;
-        echo (ob_get_clean());
+        echo wp_kses_post(ob_get_clean());
     }
 
 
@@ -80,13 +80,13 @@ class class_user_verification_notices
         ?>
             <div class="notice">
 
-                <h3>⚡ Introducing a React-Based Modern Dashboard for User Verification, <strong><a target="_blank" href="<?php echo admin_url(); ?>users.php?page=user_verification_dashboard">Try Now</a></strong></h3>
+                <h3>⚡ Introducing a React-Based Modern Dashboard for User Verification, <strong><a target="_blank" href="<?php echo esc_url(admin_url() . "users.php?page=user_verification_dashboard"); ?>">Try Now</a></strong></h3>
 
-                <p> <a style="margin: 0 20px;" class="" href="<?php echo esc_url_raw($actionurl) ?>">❌ Hide Notice</a></p>
+                <p> <a style="margin: 0 20px;" class="" href="<?php echo esc_url($actionurl) ?>">❌ Hide Notice</a></p>
             </div>
         <?php
         endif;
-        echo (ob_get_clean());
+        echo wp_kses_post(ob_get_clean());
     }
 
 
@@ -125,14 +125,15 @@ class class_user_verification_notices
             <div class="updated notice is-dismissible">
                 <p>
                     <?php
-                    echo sprintf(__('<strong>%s</strong> marked as verified', 'user-verification'), esc_html($display_name))
+                    /* translators: %s is User display name */
+                    echo sprintf(esc_html_e('<strong>%s</strong> marked as verified', 'user-verification'), esc_html($display_name))
                     ?>
                 </p>
 
             </div>
         <?php
 
-            echo ob_get_clean();
+            echo wp_kses_post(ob_get_clean());
         }
     }
 
@@ -173,14 +174,15 @@ class class_user_verification_notices
             <div class="updated notice is-dismissible">
                 <p>
                     <?php
-                    echo sprintf(__('<strong>%s</strong> marked as Unverified', 'user-verification'), esc_html($display_name))
+                    /* translators: %s is User display name */
+                    echo sprintf(esc_html_e('<strong>%s</strong> marked as Unverified', 'user-verification'), esc_html($display_name))
                     ?>
                 </p>
 
             </div>
         <?php
 
-            echo ob_get_clean();
+            echo wp_kses_post(ob_get_clean());
         }
     }
 
@@ -352,14 +354,15 @@ class class_user_verification_notices
             <div class="updated notice is-dismissible">
                 <p>
                     <?php
-                    echo sprintf(__('Verification mail resend to <strong>%s</strong>', 'user-verification'), esc_html($display_name))
+                    /* translators: %s is User display name */
+                    echo sprintf(esc_html_e('Verification mail resend to <strong>%s</strong>', 'user-verification'), esc_html($display_name))
                     ?>
                 </p>
 
             </div>
 <?php
 
-            echo ob_get_clean();
+            echo wp_kses_post(ob_get_clean());
         }
     }
 }

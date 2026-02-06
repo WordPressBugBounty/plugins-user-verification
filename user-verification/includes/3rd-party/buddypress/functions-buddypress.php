@@ -22,7 +22,7 @@ function validate_email_edu()
 
 
         if ($is_blocked) {
-            //$errors[] = sprintf(__( 'This %s domain is blocked!', 'user-verification' ), '<strong>'.$email_domain.'</strong>');
+            /* translators: %s is the blocked email domain */
             $bp->signup->errors['signup_email'] = sprintf(__('This %s domain is blocked!', 'user-verification'), esc_url_raw($email_domain));
         }
 
@@ -33,7 +33,7 @@ function validate_email_edu()
 
 
         if (!$is_allowed) {
-            //$errors[] = sprintf(__( 'This %s domain is not allowed!', 'user-verification' ), '<strong>'.$email_domain.'</strong>');
+            /* translators: %s is the not allowed domain */
             $bp->signup->errors['signup_email'] = sprintf(__('This %s domain is not allowed!', 'user-verification'), esc_url_raw($email_domain));
         }
     }
@@ -46,6 +46,7 @@ function validate_email_edu()
         $username_blocked = user_verification_is_username_blocked($username);
 
         if ($username_blocked) {
+            /* translators: %s is username not allowed */
             $bp->signup->errors['signup_username'] = sprintf(__('This %s username is not allowed!', 'user-verification'), esc_html($username));
         }
     }

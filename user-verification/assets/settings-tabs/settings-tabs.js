@@ -10,9 +10,28 @@
             header: "> div > h3",
             collapsible: true,
         });
-
+        $(".color-picker").wpColorPicker();
         $(".settings-tabs [colorPicker]").wpColorPicker();
+        $(".datepicker").datepicker({
+            dateFormat: ""
+        });
 
+        $(document).on("keyup", ".text-icon input", function () {
+            val = $(this).val();
+            if (val) {
+                $(this).parent().children(".icon").html(val);
+            }
+        })
+
+        wp.codeEditor.initialize($('.code-editor'), { type: "text/javascript" });
+        wp.codeEditor.initialize($('.css_editor'), { type: "text/css" });
+
+        $(document).on("change", ".range", function () {
+            val = $(this).val();
+            if (val) {
+                $(this).parent().children(".range-value").html(val);
+            }
+        })
 
         $(".settings-tabs .accordion[sortable='true']").sortable({
             axis: "y",
@@ -196,18 +215,44 @@
             }
         })
 
-        jQuery(document).on("click", ".settings-tabs .field-repeatable-wrapper .add-repeat-field", function () {
-            now = jQuery.now();
-            add_html = $(this).attr('add_html');
+        // jQuery(document).on("click", ".settings-tabs .field-repeatable-wrapper .add-repeat-field", function () {
+        //     now = jQuery.now();
+        //     add_html = $(this).attr('add_html');
 
-            repeatable_html = add_html.replace(/TIMEINDEX/g, now);
+        //     //console.log($(this));
 
-            $(this).parent().children('.repeatable-field-list').append(repeatable_html);
+        //     repeatable_html = add_html.replace(/TIMEINDEX/g, now);
 
-            textarea_to_editor();
+        //     $(this).parent().children('.repeatable-field-list').append(repeatable_html);
+
+        //     textarea_to_editor();
 
 
-        })
+        // })
+
+
+        document.querySelectorAll(".add-repeat-field").forEach(item => {
+            item.addEventListener("click", function (e) {
+                const timestamp = Date.now();
+
+                const wrapperid = e.target.getAttribute("data-wrapper-id");
+                const add_html = e.target.getAttribute("data-add_html");
+                repeatable_html = add_html.replace(/TIMEINDEX/g, timestamp);
+
+                console.log(wrapperid);
+                console.log(repeatable_html);
+
+                e.target.parentElement.querySelector('.repeatable-field-list').insertAdjacentHTML('beforeend', repeatable_html);
+                textarea_to_editor();
+            });
+        });
+
+
+
+
+
+
+
 
 
         function textarea_to_editor() {

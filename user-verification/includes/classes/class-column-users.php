@@ -61,15 +61,15 @@ class class_user_verification_users_columns
                 <?php
 
                 if ($user_activation_status === '1') {
-                    echo __('Verified', 'user-verification');
+                    echo esc_html_e('Verified', 'user-verification');
                 }
 
                 if ($user_activation_status === '0') {
-                    echo __('Unverified', 'user-verification');
+                    echo esc_html_e('Unverified', 'user-verification');
                 }
 
                 if ($user_activation_status === '') {
-                    echo __('Old User', 'user-verification');
+                    echo esc_html_e('Old User', 'user-verification');
                 }
 
 
@@ -104,15 +104,14 @@ class class_user_verification_users_columns
 
                     $resend_verification_url = wp_nonce_url($resend_verification_url,  'resend_verification');
 
-                    // //error_log($resend_verification_url);
 
                 ?>
 
                     <span class="mark_as_verified">
-                        <a href="<?php echo esc_url_raw($mark_as_verified_url); ?>"><?php echo __('Mark as Verified', 'user-verification'); ?></a>
+                        <a href="<?php echo esc_url_raw($mark_as_verified_url); ?>"><?php echo esc_html_e('Mark as Verified', 'user-verification'); ?></a>
                     </span> |
                     <span class="resend_verification">
-                        <a href="<?php echo esc_url_raw($resend_verification_url); ?>"><?php echo __('Resend verification', 'user-verification'); ?></a>
+                        <a href="<?php echo esc_url_raw($resend_verification_url); ?>"><?php echo esc_html_e('Resend verification', 'user-verification'); ?></a>
                     </span>
                 <?php
 
@@ -132,7 +131,7 @@ class class_user_verification_users_columns
 
                 ?>
                     <span class="mark_as_unverified">
-                        <a href="<?php echo esc_url_raw($mark_as_unverified_url); ?>"><?php echo __('Mark as unverified', 'user-verification'); ?></a>
+                        <a href="<?php echo esc_url_raw($mark_as_unverified_url); ?>"><?php echo esc_html_e('Mark as unverified', 'user-verification'); ?></a>
                     </span>
                 <?php
                 }

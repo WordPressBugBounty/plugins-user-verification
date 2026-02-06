@@ -1,10 +1,10 @@
-=== Email Verification, Email OTP, Block Spam Email, Passwordless login, Hide Login, Magic Login - User Verification  ===
-	Contributors: PickPlugins, NafisMahmudAyon
+=== User Verification by PickPlugins ===
+	Contributors: PickPlugins
 	Donate link: http://pickplugins.com
 	Tags:  Email Verification, Hide Login, Email OTP, Email Validation, Passwordless login
 	Requires at least: 4.1
-	Tested up to: 6.8
-	Stable tag: 2.0.39
+	Tested up to: 6.9
+	Stable tag: 2.0.45
 	License: GPLv2 or later
 	License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -123,6 +123,8 @@ Simply install the plugin, configure your preferred verification methods, and ad
 **Transform your WordPress site security today with User Verification - the most comprehensive user authentication plugin available.**
 
 
+== External services ==
+
 ## Spam Protection by [https://isspammy.com](http://isspammy.com)
 
 isspammy.com is owned by PickPlugins and it's used to protect spam users from login in, registering, commenting, posting reviews and etc. Once you mark a comment as spam it will send a request to isspammy.com and it will create a record for this mail and marked as spam, so later when the same email is used to post a comment it will block them as a spammer. isspammy.com is commited to keep user email private and only accessible when requested.
@@ -148,6 +150,28 @@ isspammy.com is owned by PickPlugins and it's used to protect spam users from lo
 
 == Changelog ==
 
+
+= 2.0.45 =
+* 2026-01-19 fix - OTP login security issue fixed.
+
+= 2.0.44 =
+* 2025-12-12 fix - Duplicated inline JS issue fixed.
+* 
+= 2.0.43 =
+* 2025-12-12 fix - Latest WP compatibility issue check.
+* 2025-12-12 fix - Escaping issue fixed. 
+
+= 2.0.42 =
+* 2025-11-24 fix - Login failed conflict with Memberpress plugin issue fixed.
+  
+
+= 2.0.41 =
+* 2025-11-08 fix - OTP Length bug fixed.
+
+= 2.0.40 =
+* 2025-08-26 add - Magic Login nonce issue fixed.
+* 2025-08-26 add - Magic Login failed login redirect issue fixed.
+* 
 = 2.0.39 =
 * 2025-08-23 add - Login attempt feature added
 

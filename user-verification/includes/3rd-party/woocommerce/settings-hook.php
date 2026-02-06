@@ -11,6 +11,7 @@ function user_verification_settings_tabs_woocommerce($tabs)
 
     $tabs[] = array(
         'id' => 'woocommerce',
+        /* translators: %s is Icon HTML*/
         'title' => sprintf(__('%s WooCommerce', 'user-verification'), '<i class="fas fa-cart-arrow-down"></i>'),
         'priority' => 15,
         'active' => ($current_tab == 'woocommerce') ? true : false,
@@ -42,8 +43,8 @@ function user_verification_settings_content_woocommerce()
 
 ?>
     <div class="section">
-        <div class="section-title"><?php echo __('WooCommerce', 'user-verification'); ?></div>
-        <p class="description section-description"><?php echo __('Customize options for WooCommerce.', 'user-verification'); ?></p>
+        <div class="section-title"><?php echo esc_html_e('WooCommerce', 'user-verification'); ?></div>
+        <p class="description section-description"><?php echo esc_html_e('Customize options for WooCommerce.', 'user-verification'); ?></p>
 
         <?php
 
@@ -162,8 +163,8 @@ function user_verification_settings_content_recaptcha_woo()
 
 ?>
     <div class="section">
-        <div class="section-title"><?php echo __('WooCommerce reCAPTCHA', 'user-verification'); ?></div>
-        <p class="description section-description"><?php echo __('Customize options for WooCommerce reCAPTCHA.', 'user-verification'); ?></p>
+        <div class="section-title"><?php echo esc_html_e('WooCommerce reCAPTCHA', 'user-verification'); ?></div>
+        <p class="description section-description"><?php echo esc_html_e('Customize options for WooCommerce reCAPTCHA.', 'user-verification'); ?></p>
 
         <?php
 

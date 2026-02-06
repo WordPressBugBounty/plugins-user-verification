@@ -684,6 +684,39 @@
 }
 
 
+.range-input {}
+
+        .range-input .range-value {
+          display: inline-block;
+          vertical-align: top;
+          margin: 0 0;
+          padding: 4px 10px;
+          background: #eee;
+        }
+
+.text-icon {}
+
+        .text-icon .icon {
+          /* width: 30px; */
+          background: #ddd;
+          /* height: 28px; */
+          display: inline-block;
+          vertical-align: top;
+          text-align: center;
+          font-size: 14px;
+          padding: 5px 10px;
+          line-height: normal;
+        }
+
+
+
+
+
+
+
+
+
+
 
 @media only screen and (min-width: 1024px) {}
 

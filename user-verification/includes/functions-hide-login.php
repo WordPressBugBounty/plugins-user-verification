@@ -37,13 +37,12 @@ function user_verification_hide_login()
 
         $UserVerificationStats->add_stats('hide_login');
 
-        wp_redirect($redirect_url);
+        wp_safe_redirect($redirect_url);
         exit;
     }
 
     // Allow only custom slug
 
-    error_log($_SERVER['REQUEST_URI']);
 
 
     if (
@@ -52,7 +51,7 @@ function user_verification_hide_login()
     ) {
         $UserVerificationStats->add_stats('hide_login');
 
-        wp_redirect($redirect_url);
+        wp_safe_redirect($redirect_url);
         exit;
     }
 }

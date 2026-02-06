@@ -16,10 +16,6 @@ class UserVerificationStats
 
         $datetime = $this->get_datetime();
 
-
-        // //error_log($datetime);
-        // //error_log($type);
-
         global $wpdb;
         $table = $wpdb->prefix . "user_verification_stats";
 

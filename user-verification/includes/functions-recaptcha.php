@@ -29,8 +29,13 @@ function user_verification_login_form_recaptcha()
 
         if ($recaptcha_version == 'v2_checkbox') :
         ?>
-            <div class="g-recaptcha" <?php if ($recaptcha_version == 'v2_invisible') echo 'data-size="invisible"'; ?> data-sitekey="<?php echo esc_attr($sitekey); ?>"></div>
+            <div class="g-recaptcha" data-sitekey="<?php echo esc_attr($sitekey); ?>"></div>
         <?php
+        elseif ($recaptcha_version == 'v2_checkbox') :
+        ?>
+            <div class="g-recaptcha" data-size="invisible" data-sitekey="<?php echo esc_attr($sitekey); ?>"></div>
+        <?php
+
         elseif ($recaptcha_version == 'v3') :
         ?>
             <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response">
@@ -139,8 +144,13 @@ function user_verification_register_form_recaptcha()
 
         if ($recaptcha_version == 'v2_checkbox') :
         ?>
-            <div class="g-recaptcha" <?php if ($recaptcha_version == 'v2_invisible') echo 'data-size="invisible"'; ?> data-sitekey="<?php echo esc_attr($sitekey); ?>"></div>
+            <div class="g-recaptcha" data-sitekey="<?php echo esc_attr($sitekey); ?>"></div>
         <?php
+        elseif ($recaptcha_version == 'v2_checkbox') :
+        ?>
+            <div class="g-recaptcha" data-size="invisible" data-sitekey="<?php echo esc_attr($sitekey); ?>"></div>
+        <?php
+
         elseif ($recaptcha_version == 'v3') :
         ?>
             <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response">
@@ -225,8 +235,13 @@ function user_verification_lostpassword_recaptcha()
 
         if ($recaptcha_version == 'v2_checkbox') :
         ?>
-            <div class="g-recaptcha" <?php if ($recaptcha_version == 'v2_invisible') echo 'data-size="invisible"'; ?> data-sitekey="<?php echo esc_attr($sitekey); ?>"></div>
+            <div class="g-recaptcha" data-sitekey="<?php echo esc_attr($sitekey); ?>"></div>
         <?php
+        elseif ($recaptcha_version == 'v2_checkbox') :
+        ?>
+            <div class="g-recaptcha" data-size="invisible" data-sitekey="<?php echo esc_attr($sitekey); ?>"></div>
+        <?php
+
         elseif ($recaptcha_version == 'v3') :
         ?>
             <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response">
@@ -280,7 +295,12 @@ function user_verification_woocommerce_login_form_recaptcha()
 
         if ($recaptcha_version == 'v2_checkbox') :
         ?>
-            <div class="g-recaptcha" <?php if ($recaptcha_version == 'v2_invisible') echo 'data-size="invisible"'; ?> data-sitekey="<?php echo esc_attr($sitekey); ?>"></div>
+            <div class="g-recaptcha" data-sitekey="<?php echo esc_attr($sitekey); ?>"></div>
+        <?php
+
+        elseif ($recaptcha_version == 'v2_checkbox') :
+        ?>
+            <div class="g-recaptcha" data-size="invisible" data-sitekey="<?php echo esc_attr($sitekey); ?>"></div>
         <?php
         elseif ($recaptcha_version == 'v3') :
 
@@ -337,8 +357,15 @@ function user_verification_woocommerce_register_form_recaptcha()
 
         if ($recaptcha_version == 'v2_checkbox') :
         ?>
-            <div class="g-recaptcha" <?php if ($recaptcha_version == 'v2_invisible') echo 'data-size="invisible"'; ?> data-sitekey="<?php echo esc_attr($sitekey); ?>"></div>
+            <div class="g-recaptcha" data-sitekey="<?php echo esc_attr($sitekey); ?>"></div>
         <?php
+
+        elseif ($recaptcha_version == 'v2_invisible') :
+        ?>
+            <div class="g-recaptcha" data-size="invisible" data-sitekey="<?php echo esc_attr($sitekey); ?>"></div>
+        <?php
+
+
         elseif ($recaptcha_version == 'v3') :
         ?>
             <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response">
@@ -432,6 +459,10 @@ function user_verification_woocommerce_lostpassword_form_recaptcha()
         ?>
             <div class="g-recaptcha" <?php if ($recaptcha_version == 'v2_invisible') echo 'data-size="invisible"'; ?> data-sitekey="<?php echo esc_attr($sitekey); ?>"></div>
         <?php
+        elseif ($recaptcha_version == 'v2_invisible') :
+        ?>
+            <div class="g-recaptcha" data-size="invisible" data-sitekey="<?php echo esc_attr($sitekey); ?>"></div>
+        <?php
         elseif ($recaptcha_version == 'v3') :
         ?>
             <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response">
@@ -454,7 +485,7 @@ function user_verification_woocommerce_lostpassword_form_recaptcha()
         ?>
 
 
-<?php
+        <?php
     endif;
 }
 
@@ -509,8 +540,6 @@ reCaptcha on post single Comment forms
 callback: user_verification_comment_form_recaptcha
 */
 
-
-
 add_filter('comment_form_defaults', 'user_verification_comment_form_recaptcha');
 function user_verification_comment_form_recaptcha($default)
 {
@@ -526,13 +555,49 @@ function user_verification_comment_form_recaptcha($default)
     if ($comment_form == 'yes') :
         wp_enqueue_script('recaptcha_js');
         $html = '';
-        $html .= '<div class="g-recaptcha" ';
 
-        if ($recaptcha_version == 'v2_invisible') {
-            $html .= ' data-size="invisible" ';
-        }
+        ob_start();
 
-        $html .= 'data-sitekey="' . esc_attr($sitekey) . '"></div>';
+
+
+
+        if ($recaptcha_version == 'v2_checkbox') :
+
+        ?>
+            <div class="g-recaptcha" data-sitekey="<?php echo esc_attr($sitekey); ?>"></div>
+        <?php
+
+        elseif ($recaptcha_version == 'v2_invisible') :
+        ?>
+
+
+
+        <?php
+
+        elseif ($recaptcha_version == 'v3') :
+
+        ?>
+            <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response">
+            <input type="hidden" name="action" value="validate_captcha">
+            <script>
+                grecaptcha.ready(function() {
+                    // do request for recaptcha token
+                    // response is promise with passed token
+                    grecaptcha.execute('<?php echo esc_attr($sitekey); ?>', {
+                            action: 'validate_captcha'
+                        })
+                        .then(function(token) {
+                            // add token value to form
+                            document.getElementById('g-recaptcha-response').value = token;
+                        });
+                });
+            </script>
+<?php
+
+
+        endif;
+
+        $html = ob_get_clean();
 
         $default['fields']['recaptcha'] = $html;
 
@@ -562,15 +627,17 @@ function user_verification_comment_form_recaptcha_validate($commentdata)
 
     $secretkey = isset($user_verification_settings['recaptcha']['secretkey']) ? $user_verification_settings['recaptcha']['secretkey'] : '';
 
+
+
     if (isset($_POST['g-recaptcha-response'])) {
         $res = isset($_POST['g-recaptcha-response']) ? sanitize_text_field($_POST['g-recaptcha-response']) : '';
 
-        $response = wp_remote_get("https://www.google.com/recaptcha/api/siteverify?secret=" . $secretkey . "&response=" . $res);
+        $response = wp_remote_get("https://www.google.com/recaptcha/api/siteverify?secret=" . $secretkey . "&response=" . $res . "&remoteip=" . $_SERVER['REMOTE_ADDR']);
         $response = json_decode($response["body"], true);
 
         if ($comment_form == 'yes') :
             if ($response["success"] != true) {
-                wp_die(__('Captcha error, please try again.', 'user-verification'));
+                wp_die(esc_html_e('Captcha error, please try again. 44', 'user-verification'));
             }
         endif;
     }

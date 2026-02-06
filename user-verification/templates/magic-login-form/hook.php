@@ -87,7 +87,11 @@ function user_verification_form_wrap_process_magicLogin($request)
             $magic_login_page_url
         );
 
+        $nonce = wp_create_nonce('nonce_magic_login');
+
+
         $magic_login_page_url = wp_nonce_url($magic_login_page_url,  'nonce_magic_login');
+        $magic_login_page_url = str_replace('&amp;', '&', $magic_login_page_url);
 
 
         $site_name = get_bloginfo('name');
@@ -131,14 +135,19 @@ function user_verification_form_wrap_process_magicLogin($request)
 
         if ($enable == 'yes') {
             $mail_status = $class_user_verification_emails->send_email($email_data);
-            $response['success']['loggedInUser'] = __('Mail sent', 'user-verification');
+
+            if ($mail_status) {
+
+                $response['success']['loggedInUser'] = __('Mail sent', 'user-verification');
 
 
-            // stats record start
-            $UserVerificationStats = new UserVerificationStats();
-            $UserVerificationStats->add_stats('magic_login_sent');
-            // stats record end
-
+                // stats record start
+                $UserVerificationStats = new UserVerificationStats();
+                $UserVerificationStats->add_stats('magic_login_sent');
+                // stats record end
+            } else {
+                $response['errors']['loggedInUser'] = __('There is an error.', 'user-verification');
+            }
         }
     } else {
         $response['errors']['loggedInUser'] = __('There is an error.', 'user-verification');
@@ -152,19 +161,7 @@ function user_verification_form_wrap_process_magicLogin($request)
 
 
 
-add_action('wp_print_footer_scripts', function () {
 
-    global $postGridBlocksVars;
-?>
-    <script>
-        <?php
-
-        $user_verification_scripts_vars =  wp_json_encode($postGridBlocksVars);
-        echo "var user_verification_scripts_vars=" . $user_verification_scripts_vars;
-        ?>
-    </script>
-<?php
-});
 
 
 
@@ -174,19 +171,23 @@ add_action('init', 'user_verification_do_magic_login');
 function user_verification_do_magic_login()
 {
 
-    $_wpnonce = isset($_REQUEST['_wpnonce']) ? sanitize_text_field($_REQUEST['_wpnonce']) : '';
 
 
-    if (!empty($_wpnonce)) {
 
-        if (!wp_verify_nonce($_wpnonce, 'nonce_magic_login')) {
-            return;
-        }
+    if (isset($_GET['_wpnonce']) && wp_verify_nonce($_GET['_wpnonce'], 'nonce_magic_login')) {
+        $_wpnonce = isset($_GET['_wpnonce']) ? sanitize_text_field($_GET['_wpnonce']) : '';
 
 
-        if (isset($_REQUEST['user_verification_magic_login'])) {
+        if (isset($_GET['user_verification_magic_login'])) {
 
-            $activation_key = isset($_REQUEST['user_verification_magic_login']) ? sanitize_text_field($_REQUEST['user_verification_magic_login']) : '';
+
+
+            $activation_key = isset($_GET['user_verification_magic_login']) ? sanitize_text_field($_GET['user_verification_magic_login']) : '';
+
+            $user_verification_settings = get_option('user_verification_settings');
+            $magicLogin = isset($user_verification_settings['magicLogin']) ? $user_verification_settings['magicLogin'] : [];
+            $redirect_after_login = isset($magicLogin['redirect_after_login']) ? $magicLogin['redirect_after_login'] : '';
+            $redirect_after_failed = isset($magicLogin['redirect_after_failed']) ? $magicLogin['redirect_after_failed'] : '';
 
 
             global $wpdb;
@@ -196,7 +197,14 @@ function user_verification_do_magic_login()
             $meta_data    = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table WHERE meta_value = %s AND meta_key = 'magic_login_key'", $activation_key));
 
 
-            if (empty($meta_data)) return;
+            if (empty($meta_data)) {
+                $redirect_after_failed_url = get_permalink($redirect_after_failed);
+                $redirect_after_failed_url = !empty($redirect_after_failed_url) ? $redirect_after_failed_url : get_bloginfo('url');
+
+                wp_safe_redirect($redirect_after_failed_url);
+
+                exit;
+            };
 
             // Record a stats start
             $UserVerificationStats = new UserVerificationStats();
@@ -210,13 +218,22 @@ function user_verification_do_magic_login()
             wp_set_current_user($meta_data->user_id, $user->user_login);
             wp_set_auth_cookie($meta_data->user_id);
             do_action('wp_login', $user->user_login, $user);
-            $user_verification_settings = get_option('user_verification_settings');
-            $redirect_after_login = isset($user_verification_settings['magicLogin']['redirect_after_login']) ? $user_verification_settings['magicLogin']['redirect_after_login'] : '';
+
+
+
+
+
             $redirect_after_login_url = get_permalink($redirect_after_login);
             $redirect_after_login_url = !empty($redirect_after_login_url) ? $redirect_after_login_url : get_bloginfo('url');
 
 
+            $redirect_after_failed_url = get_permalink($redirect_after_failed);
+            $redirect_after_failed_url = !empty($redirect_after_failed_url) ? $redirect_after_failed_url : get_bloginfo('url');
+
+
+
             wp_safe_redirect($redirect_after_login_url);
+            exit;
         }
     }
 }

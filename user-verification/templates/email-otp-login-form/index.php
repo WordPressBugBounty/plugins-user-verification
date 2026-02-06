@@ -56,7 +56,7 @@ function user_verification_otp_login_form()
                 </div>
 
                 <div class="input-wrap send-otp-wrap">
-                    <input id="pg-123-submit" class="button" type="submit" value="Send OTP" data-nonce="<?php echo wp_create_nonce("user_verification_otp_nonce") ?>" />
+                    <input id="pg-123-submit" class="button" type="submit" value="Send OTP" data-nonce="<?php echo esc_attr(wp_create_nonce("user_verification_otp_nonce")) ?>" />
                 </div>
                 <div class="input-wrap login-wrap" style="display: none;">
                     <input type="submit" value="Login" />

@@ -10,7 +10,18 @@ function user_verification_form_wrap_process_otpLogin($request)
     $email = $request->get_param('email');
     $steps = (int) $request->get_param('steps');
     $otp_code =  $request->get_param('otp');
+    $_wpnonce =  $request->get_param('_wpnonce');
     // $gRecaptchaResponse = $request->get_param('g-recaptcha-response');
+
+
+		if (!wp_verify_nonce($_wpnonce, 'wp_rest')) {
+
+          
+
+  $response['errors']['invalidRequest'] = __('Invalid request', 'user-verification');
+        return $response;
+
+};
 
 
 
@@ -23,6 +34,8 @@ function user_verification_form_wrap_process_otpLogin($request)
     $otp_sent_success = isset($messages['otp_sent_success']) ? $messages['otp_sent_success'] : '';
     $otp_sent_error = isset($messages['otp_sent_error']) ? $messages['otp_sent_error'] : '';
 
+
+    $UserVerificationStats = new UserVerificationStats();
 
 
     // if (isset($gRecaptchaResponse)) :
@@ -55,7 +68,7 @@ function user_verification_form_wrap_process_otpLogin($request)
 
 
     if ($uv_otp_count >= 4) {
-        $error->add('tried_limit_reached', 'Sorry you have tried too many times.');
+        $error->add('tried_limit_reached', esc_html('Sorry you have tried too many times.'));
     }
 
 
@@ -107,7 +120,6 @@ function user_verification_form_wrap_process_otpLogin($request)
 
         $otp_via_mail = user_verification_send_otp_via_mail($user_data);
 
-        $UserVerificationStats = new UserVerificationStats();
 
 
         if ($otp_via_mail) {
@@ -120,12 +132,12 @@ function user_verification_form_wrap_process_otpLogin($request)
             $response['errors']['otp_sent_error'] = $otp_sent_error;
             $UserVerificationStats->add_stats('email_otp_sent_error');
 
-            // $response['success']['otp_sent'] = $otp_sent_success;
+            //$response['success']['otp_sent'] = $otp_sent_success;
         }
 
 
         $response['otp_sent'] = $otp_via_mail;
-        // $response['otp_sent'] = true;
+        //$response['otp_sent'] = true;
         $response['count'] = $uv_otp_count;
         $response['steps'] = $steps;
     }
@@ -135,10 +147,23 @@ function user_verification_form_wrap_process_otpLogin($request)
 
         $saved_otp = get_user_meta($user_id, 'uv_otp', true);
 
+        if(empty($otp_code)){
+            $UserVerificationStats->add_stats('wrong_email_otp_used');
+            $response['errors']['wrong_otp'] = __('Wrong OTP used.', 'user-verification');
+            return $response;
+        }
 
+
+        if(empty($saved_otp)){
+            $UserVerificationStats->add_stats('wrong_email_otp_used');
+            $response['errors']['wrong_otp'] = __('OTP missmatch.', 'user-verification');
+            return $response;
+        }
 
 
         if ($saved_otp != $otp_code) {
+            $UserVerificationStats->add_stats('wrong_email_otp_used');
+
             $response['errors']['wrong_otp'] = __('Wrong OTP used.', 'user-verification');
             return $response;
         }
@@ -152,8 +177,10 @@ function user_verification_form_wrap_process_otpLogin($request)
             $response['success']['logged'] = __('OTP login success.', 'user-verification');
             $response['steps'] = $steps;
 
+            $UserVerificationStats->add_stats('email_otp_used');
 
             delete_user_meta($user_id, 'uv_otp');
+
 
             return $response;
         } else {
@@ -164,28 +191,12 @@ function user_verification_form_wrap_process_otpLogin($request)
 
 
 
-
-
-
-
     return $response;
 }
 
 
 
-add_action('wp_print_footer_scripts', function () {
 
-    global $postGridBlocksVars;
-?>
-    <script>
-        <?php
-
-        $user_verification_scripts_vars =  wp_json_encode($postGridBlocksVars);
-        echo "var user_verification_scripts_vars=" . $user_verification_scripts_vars;
-        ?>
-    </script>
-<?php
-});
 
 
 
@@ -195,6 +206,7 @@ function user_verification_send_otp_via_mail($user_data)
 
     $error = new WP_Error();
 
+    $user_verification_settings = get_option('user_verification_settings');
 
 
     $user_email = $user_data['user_email'];

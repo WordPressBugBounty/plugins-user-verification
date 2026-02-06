@@ -116,7 +116,8 @@ function my_pmpro_registration_protect_username()
     $is_blocked = user_verification_is_username_blocked($username);
 
     if ($is_blocked) {
-        $pmpro_msg = __("<strong>{$username}</strong> username is not allowed!", 'user-verification');
+        /* translators: %s is username not allowed */
+        $pmpro_msg =  sprintf(__(' <strong>%s</strong> username is not allowed!', 'user-verification'), $username);
         $pmpro_msgt = "pmpro_error";
         return false;
     } else {

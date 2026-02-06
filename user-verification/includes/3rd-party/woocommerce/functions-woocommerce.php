@@ -21,7 +21,8 @@ function uv_woocommerce_on_checkout_protect_username()
 
     $is_blocked = user_verification_is_username_blocked($username);
     if ($is_blocked) {
-        wc_add_notice(__("<strong>{$username}</strong> username is not allowed!", 'user-verification'), 'error');
+        /* translators: %s is username  */
+        wc_add_notice(sprintf(__("<strong>%s</strong> username is not allowed!", 'user-verification'), $username), 'error');
     }
 }
 
@@ -66,7 +67,7 @@ function uv_woocommerce_registration_protect_username($validation_error, $userna
 
     $is_blocked = user_verification_is_username_blocked($username);
     if ($is_blocked) {
-
+        /* translators: %s is User name*/
         $validation_error->add('blocked_username', sprintf(__("<strong>%s</strong> username is not allowed!", 'user-verification'), $username));
     }
 
@@ -138,7 +139,7 @@ function user_verification_woocommerce_thankyou($order_id)
     $url = get_permalink($redirect_after_payment) . '?uv_check=true';
 
     if ($order->status != 'failed') {
-        wp_redirect($url);
+        wp_safe_redirect($url);
         exit;
     }
 }

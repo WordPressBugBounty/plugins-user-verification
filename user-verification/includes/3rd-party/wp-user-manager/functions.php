@@ -78,7 +78,8 @@ function uv_submit_wpum_form_validate_fields($bool, $fields, $values, $form_name
         $is_blocked = user_verification_is_username_blocked($user_email);
         if ($is_blocked) {
             //UM()->form()->add_error('user_login', __('Username is blocked','user-verification') );
-            return new WP_Error('validation-error', sprintf(__('<strong>%s</strong> Username is blocked', 'wp-user-manager'), $field['value']));
+            /* translators: %s is User name */
+            return new WP_Error('validation-error', sprintf(__('<strong>%s</strong> Username is blocked', 'user-verification'), $field['value']));
         }
     }
 
@@ -91,7 +92,8 @@ function uv_submit_wpum_form_validate_fields($bool, $fields, $values, $form_name
         $is_blocked = user_verification_is_emaildomain_blocked($user_email);
         if ($is_blocked) {
             //UM()->form()->add_error('user_email', __('This email domain is not allowed!','user-verification') );
-            return new WP_Error('validation-error', sprintf(__(' This email domain <strong>%s</strong> is not allowed!', 'wp-user-manager'), $email_domain));
+            /* translators: %s is User name */
+            return new WP_Error('validation-error', sprintf(__(' This email domain <strong>%s</strong> is not allowed!', 'user-verification'), $email_domain));
         }
     }
 }

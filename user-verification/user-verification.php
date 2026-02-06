@@ -3,7 +3,7 @@
 Plugin Name: User Verification by PickPlugins
 Plugin URI: http://pickplugins.com
 Description: Verify user before access on your website.
-Version: 2.0.39
+Version: 2.0.45
 Text Domain: user-verification
 Domain Path: /languages
 Author: PickPlugins
@@ -27,9 +27,9 @@ class UserVerification
         $this->_load_classes();
         $this->_load_script();
 
-        global $postGridBlocksVars;
+        global $UserVerificationVars;
 
-        $postGridBlocksVars['siteUrl'] = get_bloginfo('url');
+        $UserVerificationVars['siteUrl'] = get_bloginfo('url');
 
 
         add_action('plugins_loaded', array($this, '_textdomain'));
@@ -283,13 +283,14 @@ class UserVerification
         wp_register_style('user_verification', user_verification_plugin_url . 'assets/front/css/style.css');
 
 
-        if ($default_login_page == 'yes') {
-            if ($recaptcha_version == 'v2_checkbox') {
-                wp_enqueue_script('recaptcha_js',  'https://www.google.com/recaptcha/api.js', [], null);
-            } elseif ($recaptcha_version == 'v3') {
-                wp_enqueue_script('recaptcha_js',  'https://www.google.com/recaptcha/api.js?render=' . $sitekey, [], null);
-            }
+        if ($recaptcha_version == 'v2_checkbox') {
+            wp_register_script('recaptcha_js',  'https://www.google.com/recaptcha/api.js', [], null);
+        } elseif ($recaptcha_version == 'v2_invisible') {
+            wp_register_script('recaptcha_js',  'https://www.google.com/recaptcha/api.js?onload=recaptchaOnload&render=explicit', [], null);
+        } elseif ($recaptcha_version == 'v3') {
+            wp_register_script('recaptcha_js',  'https://www.google.com/recaptcha/api.js?render=' . $sitekey, [], null);
         }
+
 
 
 

@@ -229,7 +229,6 @@ class UserVerificationRest
 			return $response;
 		}
 
-		error_log($formType);
 
 		if (empty($errors)) {
 			$process_form = apply_filters('user_verification_form_wrap_process_' . $formType,  $request);
