@@ -359,7 +359,7 @@ class class_user_verification_manage_verification
             }
 
 
-            $meta_data    = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table WHERE meta_value = %s", $activation_key));
+            $meta_data    = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table WHERE meta_value = %s AND meta_key = %s", $activation_key, 'user_activation_key'));
             $user_id = $meta_data->user_id;
 
             if (!empty($meta_data)) {

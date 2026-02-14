@@ -4,7 +4,7 @@
 	Tags:  Email Verification, Hide Login, Email OTP, Email Validation, Passwordless login
 	Requires at least: 4.1
 	Tested up to: 6.9
-	Stable tag: 2.0.45
+	Stable tag: 2.0.46
 	License: GPLv2 or later
 	License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -150,6 +150,9 @@ isspammy.com is owned by PickPlugins and it's used to protect spam users from lo
 
 == Changelog ==
 
+
+= 2.0.46 =
+* 2026-02-14 fix - Broken Authentication vulnerability issue fixed.
 
 = 2.0.45 =
 * 2026-01-19 fix - OTP login security issue fixed.
