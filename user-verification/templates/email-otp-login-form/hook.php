@@ -9,19 +9,18 @@ function user_verification_form_wrap_process_otpLogin($request)
 
     $email = $request->get_param('email');
     $steps = (int) $request->get_param('steps');
-    $otp_code =  $request->get_param('otp');
+    $otp_code =  (string) $request->get_param('otp');
     $_wpnonce =  $request->get_param('_wpnonce');
     // $gRecaptchaResponse = $request->get_param('g-recaptcha-response');
 
 
-		if (!wp_verify_nonce($_wpnonce, 'wp_rest')) {
+    if (!wp_verify_nonce($_wpnonce, 'wp_rest')) {
 
-          
 
-  $response['errors']['invalidRequest'] = __('Invalid request', 'user-verification');
+
+        $response['errors']['invalidRequest'] = __('Invalid request', 'user-verification');
         return $response;
-
-};
+    };
 
 
 
@@ -147,21 +146,20 @@ function user_verification_form_wrap_process_otpLogin($request)
 
         $saved_otp = get_user_meta($user_id, 'uv_otp', true);
 
-        if(empty($otp_code)){
+        if (empty($otp_code)) {
             $UserVerificationStats->add_stats('wrong_email_otp_used');
             $response['errors']['wrong_otp'] = __('Wrong OTP used.', 'user-verification');
             return $response;
         }
 
 
-        if(empty($saved_otp)){
+        if (empty($saved_otp)) {
             $UserVerificationStats->add_stats('wrong_email_otp_used');
             $response['errors']['wrong_otp'] = __('OTP missmatch.', 'user-verification');
             return $response;
         }
 
-
-        if ($saved_otp != $otp_code) {
+        if ($saved_otp !== $otp_code) {
             $UserVerificationStats->add_stats('wrong_email_otp_used');
 
             $response['errors']['wrong_otp'] = __('Wrong OTP used.', 'user-verification');
