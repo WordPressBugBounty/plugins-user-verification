@@ -523,7 +523,7 @@ function uv_resend_verification_form($attr)
 
     ?>
     <form id="user-verification-resend" action="" method="post">
-        <?php wp_nonce_field('nonce_resend_verification'); ?>
+        <?php wp_nonce_field('resend_verification'); ?>
         <input type="hidden" name="resend_verification_hidden" value="Y">
 
         <div class="form-area">
@@ -550,40 +550,47 @@ function uv_resend_verification_form($attr)
 
 
 add_action('init', 'user_verification_auto_login');
+
 function user_verification_auto_login()
 {
 
 
-    if (
-        isset($_REQUEST['user_verification_action']) && trim($_REQUEST['user_verification_action']) == 'autologin' &&
-        isset($_REQUEST['activation_key'])
-    ) {
 
-        $activation_key = isset($_REQUEST['activation_key']) ? sanitize_text_field($_REQUEST['activation_key']) : '';
+    if (isset($_GET['user_verification_action']) && $_GET['user_verification_action'] == 'autologin') {
 
-
-        global $wpdb;
-        $table = $wpdb->prefix . "usermeta";
-
-        //var_dump($activation_key);
+        $_wpnonce = isset($_GET['_wpnonce']) ? sanitize_text_field(wp_unslash($_REQUEST['_wpnonce'] ?? '')) : '';
 
 
 
-        $meta_data    = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table WHERE meta_value = %s AND meta_key = 'user_activation_key'", $activation_key));
+
+        if (wp_verify_nonce($_wpnonce, 'nonce_autologin')) {
+
+            $activation_key = isset($_REQUEST['activation_key']) ? sanitize_text_field($_REQUEST['activation_key']) : '';
 
 
-        if (empty($meta_data)) return;
-
-        $user = get_user_by('id', $meta_data->user_id);
-
-        $user_activation_status = get_user_meta($meta_data->user_id, 'user_activation_status', true);
+            global $wpdb;
+            $table = $wpdb->prefix . "usermeta";
 
 
+            $meta_data    = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table WHERE meta_value = %s AND meta_key = 'user_activation_key'", $activation_key));
 
-        if ($user_activation_status == 1) {
-            wp_set_current_user($meta_data->user_id, $user->user_login);
-            wp_set_auth_cookie($meta_data->user_id);
-            do_action('wp_login', $user->user_login, $user);
+
+            if (empty($meta_data)) return;
+
+            $user = get_user_by('id', $meta_data->user_id);
+
+            $user_activation_status = get_user_meta($meta_data->user_id, 'user_activation_status', true);
+
+
+
+            if ($user_activation_status == 1) {
+
+                delete_user_meta($meta_data->user_id, 'user_activation_key');
+
+                wp_set_current_user($meta_data->user_id, $user->user_login);
+                wp_set_auth_cookie($meta_data->user_id);
+                do_action('wp_login', $user->user_login, $user);
+            }
         }
     }
 }
@@ -638,7 +645,7 @@ function uv_user_authentication($errors, $username, $passwords)
         $verification_page_url
     );
 
-    $resend_verification_url = wp_nonce_url($resend_verification_url,  'resend_verification');
+    $resend_verification_url = wp_nonce_url($resend_verification_url,  'resend_verification_' . $user->ID);
 
 
 

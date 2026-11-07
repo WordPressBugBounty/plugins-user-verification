@@ -3,8 +3,8 @@
 	Donate link: http://pickplugins.com
 	Tags:  Email Verification, Hide Login, Email OTP, Email Validation, Passwordless login
 	Requires at least: 4.1
-	Tested up to: 6.9
-	Stable tag: 2.0.47
+	Tested up to: 7.1
+	Stable tag: 2.0.50
 	License: GPLv2 or later
 	License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -150,7 +150,16 @@ isspammy.com is owned by PickPlugins and it's used to protect spam users from lo
 
 == Changelog ==
 
+= 2.0.50 =
+* 2026-11-05 fix - Delete email activation key after complete email verification and auto login.
 
+
+= 2.0.49 =
+* 2026-10-12 fix - email verification token is accepted as a login credential, and is not consumed.
+* 2026-10-12 fix - OTP login attempt counter is checked but never incremented on the verification step.
+
+= 2.0.48 =
+* 2026-09-20 fix - resend_verification nonce validation issue updated
 
 
 = 2.0.47 =

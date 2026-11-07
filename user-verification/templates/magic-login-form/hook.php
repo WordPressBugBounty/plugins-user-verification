@@ -87,8 +87,6 @@ function user_verification_form_wrap_process_magicLogin($request)
             $magic_login_page_url
         );
 
-        $nonce = wp_create_nonce('nonce_magic_login');
-
 
         $magic_login_page_url = wp_nonce_url($magic_login_page_url,  'nonce_magic_login');
         $magic_login_page_url = str_replace('&amp;', '&', $magic_login_page_url);
@@ -175,6 +173,7 @@ function user_verification_do_magic_login()
 
 
     if (isset($_GET['_wpnonce']) && wp_verify_nonce($_GET['_wpnonce'], 'nonce_magic_login')) {
+
         $_wpnonce = isset($_GET['_wpnonce']) ? sanitize_text_field($_GET['_wpnonce']) : '';
 
 

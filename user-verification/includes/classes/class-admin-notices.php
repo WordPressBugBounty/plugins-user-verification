@@ -175,7 +175,7 @@ class class_user_verification_notices
                 <p>
                     <?php
                     /* translators: %s is User display name */
-                    echo sprintf(esc_html_e('<strong>%s</strong> marked as Unverified', 'user-verification'), esc_html($display_name))
+                    echo sprintf(wp_kses_post('<strong>%s</strong> marked as Unverified'), esc_html($display_name))
                     ?>
                 </p>
 
@@ -215,7 +215,7 @@ class class_user_verification_notices
 
 
 
-        if (wp_verify_nonce($_wpnonce, 'resend_verification')) {
+        if (wp_verify_nonce($_wpnonce, 'resend_verification_' . $user_id)) {
 
 
 

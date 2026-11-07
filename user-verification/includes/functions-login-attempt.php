@@ -53,7 +53,11 @@ function user_verification_login_failed($username)
             $verification_page_url
         );
 
-        $resend_verification_url = wp_nonce_url($resend_verification_url,  'resend_verification');
+        $resend_verification_url = wp_nonce_url($resend_verification_url,  'resend_verification_' . $user->ID);
+
+        $resend_verification_url = str_replace('&amp;', '&', $resend_verification_url);
+
+
         $message = sprintf(
             '<strong>%s</strong> %s <a href="%s">%s</a>',
             __('Error:', 'user-verification'),

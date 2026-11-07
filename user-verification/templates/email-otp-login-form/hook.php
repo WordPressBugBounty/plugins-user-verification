@@ -146,6 +146,25 @@ function user_verification_form_wrap_process_otpLogin($request)
 
         $saved_otp = get_user_meta($user_id, 'uv_otp', true);
 
+
+
+        if (!empty($uv_otp_count)) {
+            $uv_otp_count += 1;
+        } else {
+            $uv_otp_count = 1;
+        }
+
+
+
+        set_transient('uv_otp_count_' . $user_id, $uv_otp_count, 60);
+
+
+
+
+
+
+
+
         if (empty($otp_code)) {
             $UserVerificationStats->add_stats('wrong_email_otp_used');
             $response['errors']['wrong_otp'] = __('Wrong OTP used.', 'user-verification');

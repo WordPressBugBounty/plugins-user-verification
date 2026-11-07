@@ -12,10 +12,11 @@ function user_verification_resend_form_submit()
 
     $_wpnonce = isset($params['_wpnonce']) ? sanitize_text_field($params['_wpnonce']) : '';
     $email = isset($params['email']) ? sanitize_email($params['email']) : '';
+    $user_data = get_user_by('email', $email);
 
 
 
-    if (wp_verify_nonce($_wpnonce, 'nonce_resend_verification') && $params['resend_verification_hidden'] == 'Y') {
+    if (wp_verify_nonce($_wpnonce, 'resend_verification_' . $user_data->ID) && $params['resend_verification_hidden'] == 'Y') {
 
 
         $user_verification_settings = get_option('user_verification_settings');
@@ -23,7 +24,6 @@ function user_verification_resend_form_submit()
         $activation_sent = !empty($user_verification_settings['messages']['activation_sent']) ? $user_verification_settings['messages']['activation_sent'] : __('Activation mail has sent', 'user-verification');
 
 
-        $user_data = get_user_by('email', $email);
 
         if (!empty($user_data)) {
 
@@ -113,6 +113,7 @@ function user_verification_resend_form_submit()
 
             $verification_url = wp_nonce_url($verification_url,  'email_verification');
 
+            $verification_url = str_replace('&amp;', '&', $verification_url);
 
 
             $site_name = get_bloginfo('name');

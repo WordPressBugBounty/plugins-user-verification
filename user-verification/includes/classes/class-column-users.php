@@ -102,7 +102,7 @@ class class_user_verification_users_columns
                         $actionurl
                     );
 
-                    $resend_verification_url = wp_nonce_url($resend_verification_url,  'resend_verification');
+                    $resend_verification_url = wp_nonce_url($resend_verification_url,  'resend_verification_' . $user_id);
 
 
                 ?>

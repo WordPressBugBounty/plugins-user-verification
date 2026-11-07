@@ -27,7 +27,7 @@ class class_user_verification_manage_verification
             $jsData = array();
             $mail_status = false;
 
-            if (wp_verify_nonce($_wpnonce, 'resend_verification')) {
+            if (wp_verify_nonce($_wpnonce, 'resend_verification_' . $user_id)) {
 
 
 
@@ -122,6 +122,7 @@ class class_user_verification_manage_verification
                 );
 
                 $verification_url = wp_nonce_url($verification_url,  'email_verification');
+                $verification_url = str_replace('&amp;', '&', $verification_url);
 
 
                 $site_name = get_bloginfo('name');
@@ -315,6 +316,18 @@ class class_user_verification_manage_verification
 
         if (isset($_REQUEST['user_verification_action']) && trim($_REQUEST['user_verification_action']) == 'email_verification') {
 
+
+
+            $_wpnonce = isset($_GET['_wpnonce']) ? sanitize_text_field($_GET['_wpnonce']) : '';
+
+
+            if (!wp_verify_nonce($_wpnonce, 'email_verification')) {
+
+                return;
+            }
+
+
+
             $jsData = array();
 
             wp_enqueue_style('font-awesome-5');
@@ -362,12 +375,15 @@ class class_user_verification_manage_verification
             $meta_data    = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table WHERE meta_value = %s AND meta_key = %s", $activation_key, 'user_activation_key'));
             $user_id = $meta_data->user_id;
 
+
+
             if (!empty($meta_data)) {
 
                 $jsData['is_valid_key'] = 'yes';
 
 
                 $user_activation_status = get_user_meta($meta_data->user_id, 'user_activation_status', true);
+
 
 
                 if ($user_activation_status != 0) {
@@ -489,9 +505,9 @@ class class_user_verification_manage_verification
                         $jsData['login_after_verify'] = 'yes';
 
 
-                        $user = get_user_by('id', $meta_data->user_id);
+                        //$user = get_user_by('id', $meta_data->user_id);
 
-                        wp_set_current_user($meta_data->user_id, $user->user_login);
+                        //wp_set_current_user($meta_data->user_id, $user->user_login);
 
 
 
@@ -503,9 +519,14 @@ class class_user_verification_manage_verification
                             $redirect_page_url
                         );
 
-                        //$redirect_page_url = wp_nonce_url( $redirect_page_url,  'user_verification_autologin' );
-
+                        $redirect_page_url = wp_nonce_url($redirect_page_url,  'nonce_autologin');
+                        $redirect_page_url = str_replace('&amp;', '&', $redirect_page_url);
+                    } else {
+                        delete_user_meta($user_id, 'user_activation_key');
                     }
+
+
+
 
                     if (($redirect_after_verification != 'none')) :
 
